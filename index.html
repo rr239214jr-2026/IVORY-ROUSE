@@ -85,7 +85,7 @@
             </div>
         </aside>
 
-        <!-- BARRA DE NAVEGACIÓN INFERIOR (MÓVIL ANDROID - 6 PESTAÑAS) -->
+        <!-- BARRA DE NAVEGACIÓN INFERIOR (MÓVIL ANDROID) -->
         <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-slate-900 border-t border-slate-800 z-50 flex justify-around p-1.5 text-slate-400 text-[9px] font-medium">
             <button onclick="showTab('tab-mercado')" id="btn-tab-mercado-mb" class="nav-btn-mb flex flex-col items-center py-1 text-indigo-400">
                 <i class="fa-solid fa-chart-pie text-sm mb-0.5"></i>
@@ -123,7 +123,9 @@
                         <h2 class="text-xl md:text-2xl font-bold text-slate-900">1. Estudio de Mercado & Inteligencia</h2>
                         <p class="text-xs text-slate-500">Métricas acumuladas desde la base de datos oficial en Google Sheets.</p>
                     </div>
-                    <span class="text-xs font-semibold bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full">Ivorry Rouse.sv</span>
+                    <button onclick="cargarDatosGenerales()" class="text-xs font-semibold bg-indigo-100 hover:bg-indigo-200 text-indigo-800 px-3 py-1 rounded-full transition flex items-center space-x-1">
+                        <i class="fa-solid fa-rotate-right"></i> <span>Sincronizar Sheets</span>
+                    </button>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -339,7 +341,7 @@
                             </div>
                         </div>
 
-                        <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3.5 rounded-lg transition flex items-center justify-center space-x-2 shadow-lg active:scale-95">
+                        <button type="submit" id="btn-guardar-pkg" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3.5 rounded-lg transition flex items-center justify-center space-x-2 shadow-lg active:scale-95">
                             <i class="fa-solid fa-cloud-arrow-up"></i>
                             <span>Registrar en Google Sheets</span>
                         </button>
@@ -347,7 +349,7 @@
                 </div>
             </section>
 
-            <!-- PESTAÑA 4: PAQUETES EN ENCOMENDA (DINERO CONGELADO) -->
+            <!-- PESTAÑA 4: PAQUETES EN ENCOMENDA -->
             <section id="tab-congelados" class="space-y-6 hidden">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
                     <div>
@@ -372,19 +374,18 @@
                                 <th class="p-3 md:p-4">Cliente / Celular</th>
                                 <th class="p-3 md:p-4">Encomendista</th>
                                 <th class="p-3 md:p-4 text-right">Monto en Camino</th>
-                                <th class="p-3 md:p-4 text-center">Estado</th>
                             </tr>
                         </thead>
                         <tbody id="tabla-congelados-body" class="divide-y divide-slate-100">
                             <tr>
-                                <td colspan="7" class="p-4 text-center text-slate-400">Cargando paquetes en encomienda...</td>
+                                <td colspan="6" class="p-4 text-center text-slate-400">Cargando paquetes en encomienda...</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </section>
 
-            <!-- PESTAÑA 5: DINERO EN CALLE (POR COBRAR) -->
+            <!-- PESTAÑA 5: DINERO EN CALLE -->
             <section id="tab-por-cobrar" class="space-y-6 hidden">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
                     <div>
@@ -410,14 +411,14 @@
                         </thead>
                         <tbody id="tabla-cobros-body" class="divide-y divide-slate-100">
                             <tr>
-                                <td colspan="6" class="p-4 text-center text-slate-400">Cargando cobros pendientes desde Google Sheets...</td>
+                                <td colspan="6" class="p-4 text-center text-slate-400">Cargando cobros pendientes...</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </section>
 
-            <!-- PESTAÑA 6: HISTORIAL Y FILTROS -->
+            <!-- PESTAÑA 6: HISTORIAL -->
             <section id="tab-historial" class="space-y-6 hidden">
                 <div>
                     <h2 class="text-xl md:text-2xl font-bold text-slate-900">6. Historial</h2>
@@ -427,7 +428,7 @@
                 <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 grid grid-cols-1 sm:grid-cols-3 gap-3">
                     <div>
                         <label class="block text-xs font-semibold text-slate-600 mb-1">Mes</label>
-                        <select id="filtro-mes" class="w-full p-2 border rounded-lg text-sm">
+                        <select id="filtro-mes" onchange="aplicarFiltrosHistorial()" class="w-full p-2 border rounded-lg text-sm">
                             <option value="">Todos los meses</option>
                             <option value="01">Enero</option>
                             <option value="02">Febrero</option>
@@ -445,7 +446,7 @@
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-slate-600 mb-1">Año</label>
-                        <select id="filtro-anio" class="w-full p-2 border rounded-lg text-sm">
+                        <select id="filtro-anio" onchange="aplicarFiltrosHistorial()" class="w-full p-2 border rounded-lg text-sm">
                             <option value="">Todos los años</option>
                             <option value="2026">2026</option>
                             <option value="2025">2025</option>
@@ -453,9 +454,10 @@
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-slate-600 mb-1">Estado</label>
-                        <select id="filtro-estado" class="w-full p-2 border rounded-lg text-sm">
+                        <select id="filtro-estado" onchange="aplicarFiltrosHistorial()" class="w-full p-2 border rounded-lg text-sm">
                             <option value="">Todos los estados</option>
-                            <option value="En Tránsito">En Tránsito</option>
+                            <option value="En Encomienda">En Encomienda</option>
+                            <option value="Por Cobrar">Por Cobrar</option>
                             <option value="Cobrado">Cobrado</option>
                             <option value="Devuelto">Devuelto</option>
                         </select>
@@ -489,7 +491,7 @@
         </main>
     </div>
 
-    <!-- MODAL DE EDICIÓN / CORRECCIÓN -->
+    <!-- MODAL DE EDICIÓN -->
     <div id="modal-edicion" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
         <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-center border-b pb-3">
@@ -591,10 +593,15 @@
         </div>
     </div>
 
-    <!-- LÓGICA JAVASCRIPT CONECTADA A SHEETS -->
+    <!-- CONEXIÓN REAL A LA WEB APP API DE GOOGLE APPS SCRIPT -->
     <script>
+        const API_URL = "https://script.google.com/macros/s/AKfycbxYLZLsKrFuDsZ-iW7TYaC4HDu2rAvhefahRsqGjSU0DWufpdKZbeB1GqaG5O9wCoLi/exec";
         const proveedores = new Set(["PEDIDOS EXPRESS", "CASILLERO"]);
-        let ultimoNumeroSKU = 0;
+        let globalPaquetes = [];
+
+        window.addEventListener('DOMContentLoaded', () => {
+            cargarDatosGenerales();
+        });
 
         function showTab(tabId) {
             document.querySelectorAll('main > section').forEach(sec => sec.classList.add('hidden'));
@@ -628,68 +635,103 @@
             }
         }
 
+        // CARGA Y SINCRONIZACIÓN DE DATOS DESDE SHEETS
+        function cargarDatosGenerales() {
+            fetch(API_URL + "?accion=obtenerDatosCompletos")
+                .then(res => res.json())
+                .then(data => {
+                    globalPaquetes = data.paquetes || [];
+                    
+                    // Finanzas
+                    document.getElementById('lbl-ganancia-neta').innerText = "$" + (data.kpis.gananciaNeta || 0).toFixed(2);
+                    document.getElementById('lbl-ventas-totales').innerText = "$" + (data.kpis.ventasCobradas || 0).toFixed(2);
+                    document.getElementById('lbl-costo-prendas').innerText = "$" + (data.kpis.costoPrendas || 0).toFixed(2);
+                    document.getElementById('lbl-gasto-envios').innerText = "$" + (data.kpis.perdidasDevolucion || 0).toFixed(2);
+
+                    renderizarEstudioMercado(globalPaquetes);
+                    renderizarTablas(globalPaquetes);
+                })
+                .catch(err => console.error("Error al conectar con Sheets:", err));
+        }
+
         function obtenerSiguienteSKU() {
-            document.getElementById('sku-preview').innerText = "Consultando Sheets...";
-            setTimeout(() => {
-                const siguienteNumero = ultimoNumeroSKU + 1;
-                const ceros = String(siguienteNumero).padStart(6, '0');
-                const skuSugerido = 'SKU-' + ceros;
-                
-                document.getElementById('sku-preview').innerText = skuSugerido;
-                document.getElementById('sku-input-val').value = skuSugerido;
-            }, 500);
+            document.getElementById('sku-preview').innerText = "Consultando...";
+            fetch(API_URL + "?accion=obtenerSiguienteSKU")
+                .then(res => res.json())
+                .then(data => {
+                    document.getElementById('sku-preview').innerText = data.skuSugerido;
+                    document.getElementById('sku-input-val').value = data.skuSugerido;
+                });
         }
 
         function guardarPaquete(event) {
             event.preventDefault();
-            const skuFinal = document.getElementById('sku-input-val').value;
-            const encomendistaNombre = document.getElementById('encomendista').value.trim().toUpperCase();
+            const btn = document.getElementById('btn-guardar-pkg');
+            btn.disabled = true;
+            btn.innerText = "Guardando en Google Sheets...";
 
-            if (encomendistaNombre && !proveedores.has(encomendistaNombre)) {
-                proveedores.add(encomendistaNombre);
-                const option = document.createElement('option');
-                option.value = encomendistaNombre;
-                document.getElementById('lista-encomendistas').appendChild(option);
-            }
-
-            const paqueteData = {
-                sku: skuFinal,
+            const payload = {
+                accion: "registrarPaquete",
+                sku: document.getElementById('sku-input-val').value,
                 cliente: document.getElementById('cliente').value,
                 celular: document.getElementById('celular').value,
                 departamento: document.getElementById('departamento').value,
                 destino: document.getElementById('destino').value,
                 articulo: document.getElementById('articulo').value,
-                encomendista: encomendistaNombre,
+                encomendista: document.getElementById('encomendista').value.trim().toUpperCase(),
                 fechaEncomendista: document.getElementById('fecha-encomendista').value,
                 fechaEntrega: document.getElementById('fecha-entrega').value,
                 costoPrenda: parseFloat(document.getElementById('costo-prenda').value),
                 precioCobrar: parseFloat(document.getElementById('precio-cobrar').value),
-                costoEnvio: parseFloat(document.getElementById('costo-envio').value),
-                estado: 'En Encomienda'
+                costoEnvio: parseFloat(document.getElementById('costo-envio').value)
             };
 
-            console.log("Enviando paquete a Sheets:", paqueteData);
-            alert("¡Paquete " + skuFinal + " guardado con éxito en Sheets!");
-            
-            ultimoNumeroSKU++;
-            document.getElementById('form-registro-paquete').reset();
-            obtenerSiguienteSKU();
+            fetch(API_URL, {
+                method: 'POST',
+                body: JSON.stringify(payload)
+            })
+            .then(res => res.json())
+            .then(res => {
+                alert("¡Paquete " + res.sku + " registrado exitosamente!");
+                document.getElementById('form-registro-paquete').reset();
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i><span>Registrar en Google Sheets</span>';
+                cargarDatosGenerales();
+                obtenerSiguienteSKU();
+            });
         }
 
         function marcarEstado(sku, nuevoEstado) {
-            let mensaje = (nuevoEstado === 'Cobrado') 
-                ? `¿Confirmas cobro de liquidación del paquete ${sku}?`
-                : `¿El paquete ${sku} fue DEVUELTO?`;
-
-            if (confirm(mensaje)) {
-                console.log(`Enviando actualización a Sheets: ${sku} -> ${nuevoEstado}`);
-                alert(`Estado actualizado a "${nuevoEstado}" en Google Sheets.`);
+            if (confirm(`¿Cambiar estado del paquete ${sku} a "${nuevoEstado}"?`)) {
+                fetch(API_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({ accion: "actualizarEstado", sku: sku, nuevoEstado: nuevoEstado })
+                })
+                .then(res => res.json())
+                .then(() => {
+                    cargarDatosGenerales();
+                });
             }
         }
 
         function abrirModalEdicion(sku) {
-            document.getElementById('modal-sku-title').innerText = sku;
-            document.getElementById('edit-sku').value = sku;
+            const pkg = globalPaquetes.find(p => p.sku === sku);
+            if (!pkg) return;
+
+            document.getElementById('modal-sku-title').innerText = pkg.sku;
+            document.getElementById('edit-sku').value = pkg.sku;
+            document.getElementById('edit-cliente').value = pkg.cliente;
+            document.getElementById('edit-celular').value = pkg.celular;
+            document.getElementById('edit-departamento').value = pkg.departamento;
+            document.getElementById('edit-destino').value = pkg.destino;
+            document.getElementById('edit-articulo').value = pkg.articulo;
+            document.getElementById('edit-encomendista').value = pkg.encomendista;
+            document.getElementById('edit-fecha-enc').value = pkg.fechaEncomendista;
+            document.getElementById('edit-fecha-entrega').value = pkg.fechaEntrega;
+            document.getElementById('edit-costo-prenda').value = pkg.costoPrenda;
+            document.getElementById('edit-precio-cobrar').value = pkg.precioCobrar;
+            document.getElementById('edit-costo-envio').value = pkg.costoEnvio;
+
             document.getElementById('modal-edicion').classList.remove('hidden');
         }
 
@@ -699,16 +741,148 @@
 
         function guardarEdicion(event) {
             event.preventDefault();
-            const sku = document.getElementById('edit-sku').value;
-            alert("¡Cambios guardados en Google Sheets para " + sku + "!");
-            cerrarModalEdicion();
+            const payload = {
+                accion: "editarPaquete",
+                sku: document.getElementById('edit-sku').value,
+                cliente: document.getElementById('edit-cliente').value,
+                celular: document.getElementById('edit-celular').value,
+                departamento: document.getElementById('edit-departamento').value,
+                destino: document.getElementById('edit-destino').value,
+                articulo: document.getElementById('edit-articulo').value,
+                encomendista: document.getElementById('edit-encomendista').value,
+                fechaEncomendista: document.getElementById('edit-fecha-enc').value,
+                fechaEntrega: document.getElementById('edit-fecha-entrega').value,
+                costoPrenda: parseFloat(document.getElementById('edit-costo-prenda').value),
+                precioCobrar: parseFloat(document.getElementById('edit-precio-cobrar').value),
+                costoEnvio: parseFloat(document.getElementById('edit-costo-envio').value)
+            };
+
+            fetch(API_URL, {
+                method: 'POST',
+                body: JSON.stringify(payload)
+            })
+            .then(res => res.json())
+            .then(() => {
+                cerrarModalEdicion();
+                cargarDatosGenerales();
+            });
         }
 
         function eliminarPaquete() {
             const sku = document.getElementById('edit-sku').value;
-            if (confirm(`¿ELIMINAR paquete ${sku} de Google Sheets?`)) {
-                alert(`Paquete ${sku} eliminado.`);
-                cerrarModalEdicion();
+            if (confirm(`¿ELIMINAR el paquete ${sku} de Google Sheets?`)) {
+                fetch(API_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({ accion: "eliminarPaquete", sku: sku })
+                })
+                .then(res => res.json())
+                .then(() => {
+                    cerrarModalEdicion();
+                    cargarDatosGenerales();
+                });
+            }
+        }
+
+        // RENDERIZADO TABLAS Y ANALYTICS EN TIEMPO REAL
+        function renderizarTablas(paquetes) {
+            let htmlCongelados = "";
+            let htmlPorCobrar = "";
+            let htmlHistorial = "";
+
+            let totalCongelado = 0;
+            let totalPorCobrar = 0;
+
+            paquetes.forEach(p => {
+                // Generar Historial
+                htmlHistorial += `
+                    <tr>
+                        <td class="p-3 font-bold font-mono text-indigo-600">${p.sku}</td>
+                        <td class="p-3 text-xs">${p.fechaEncomendista}</td>
+                        <td class="p-3 font-medium">${p.cliente}</td>
+                        <td class="p-3 text-xs">${p.departamento} / ${p.destino}</td>
+                        <td class="p-3 text-xs font-semibold">${p.encomendista}</td>
+                        <td class="p-3 text-right text-xs">$${parseFloat(p.costoPrenda).toFixed(2)}</td>
+                        <td class="p-3 text-right text-xs font-bold">$${parseFloat(p.precioCobrar).toFixed(2)}</td>
+                        <td class="p-3 text-right text-xs text-slate-500">$${parseFloat(p.costoEnvio).toFixed(2)}</td>
+                        <td class="p-3 text-center">
+                            <span class="text-[10px] font-bold px-2 py-1 rounded-full ${p.estado === 'Cobrado' ? 'bg-emerald-100 text-emerald-800' : p.estado === 'Devuelto' ? 'bg-rose-100 text-rose-800' : 'bg-amber-100 text-amber-800'}">${p.estado}</span>
+                        </td>
+                    </tr>`;
+
+                // Pestaña En Encomienda (Congelados)
+                if (p.estado === "En Encomienda") {
+                    totalCongelado += parseFloat(p.precioCobrar || 0);
+                    htmlCongelados += `
+                        <tr>
+                            <td class="p-3 font-bold font-mono text-indigo-600">${p.sku}</td>
+                            <td class="p-3 text-xs">${p.fechaEncomendista}</td>
+                            <td class="p-3 text-xs">${p.fechaEntrega}</td>
+                            <td class="p-3 font-medium">${p.cliente} (${p.celular})</td>
+                            <td class="p-3 font-semibold text-xs">${p.encomendista}</td>
+                            <td class="p-3 text-right font-bold text-sky-600">$${parseFloat(p.precioCobrar).toFixed(2)}</td>
+                        </tr>`;
+                }
+
+                // Pestaña Por Cobrar
+                if (p.estado === "Por Cobrar") {
+                    totalPorCobrar += parseFloat(p.precioCobrar || 0);
+                    htmlPorCobrar += `
+                        <tr>
+                            <td class="p-3 font-bold font-mono text-indigo-600">${p.sku}</td>
+                            <td class="p-3">
+                                <div class="font-medium">${p.cliente}</div>
+                                <a href="https://wa.me/503${p.celular}" target="_blank" class="text-xs text-emerald-600 hover:underline flex items-center space-x-1">
+                                    <i class="fa-brands fa-whatsapp"></i> <span>${p.celular}</span>
+                                </a>
+                            </td>
+                            <td class="p-3 text-xs"><span class="font-bold text-slate-800">${p.departamento}</span> / ${p.destino}</td>
+                            <td class="p-3 font-semibold text-xs text-slate-700">${p.encomendista}</td>
+                            <td class="p-3 text-right font-extrabold text-slate-900">$${parseFloat(p.precioCobrar).toFixed(2)}</td>
+                            <td class="p-3 text-center">
+                                <div class="flex items-center justify-center space-x-1">
+                                    <button onclick="abrirModalEdicion('${p.sku}')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 p-1.5 rounded-lg text-xs font-bold"><i class="fa-solid fa-pen-to-square"></i></button>
+                                    <button onclick="marcarEstado('${p.sku}', 'Cobrado')" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs px-2 py-1 rounded-lg font-bold">Cobrado</button>
+                                    <button onclick="marcarEstado('${p.sku}', 'Devuelto')" class="bg-rose-600 hover:bg-rose-700 text-white text-xs px-2 py-1 rounded-lg font-bold">Devuelto</button>
+                                </div>
+                            </td>
+                        </tr>`;
+                }
+            });
+
+            document.getElementById('tabla-congelados-body').innerHTML = htmlCongelados || '<tr><td colspan="6" class="p-4 text-center text-slate-400">No hay paquetes congelados.</td></tr>';
+            document.getElementById('tabla-cobros-body').innerHTML = htmlPorCobrar || '<tr><td colspan="6" class="p-4 text-center text-slate-400">No hay cobros pendientes.</td></tr>';
+            document.getElementById('tabla-historial-body').innerHTML = htmlHistorial || '<tr><td colspan="9" class="p-4 text-center text-slate-400">Sin historial.</td></tr>';
+
+            document.getElementById('total-dinero-congelado').innerText = "$" + totalCongelado.toFixed(2);
+            document.getElementById('total-dinero-calle').innerText = "$" + totalPorCobrar.toFixed(2);
+        }
+
+        function renderizarEstudioMercado(paquetes) {
+            const deptos = {};
+            const clientes = {};
+
+            paquetes.forEach(p => {
+                deptos[p.departamento] = (deptos[p.departamento] || 0) + parseFloat(p.precioCobrar || 0);
+                
+                if (!clientes[p.cliente]) {
+                    clientes[p.cliente] = { depto: p.departamento, compras: 0, total: 0 };
+                }
+                clientes[p.cliente].compras++;
+                clientes[p.cliente].total += parseFloat(p.precioCobrar || 0);
+            });
+
+            // Top Departamento
+            const sortedDeptos = Object.entries(deptos).sort((a,b) => b[1] - a[1]);
+            if (sortedDeptos.length > 0) {
+                document.getElementById('lbl-top-depto').innerText = sortedDeptos[0][0];
+                document.getElementById('lbl-top-depto-pct').innerText = "$" + sortedDeptos[0][1].toFixed(2) + " facturados";
+            }
+
+            // Top Cliente
+            const sortedClientes = Object.entries(clientes).sort((a,b) => b[1].total - a[1].total);
+            if (sortedClientes.length > 0) {
+                document.getElementById('lbl-top-cliente').innerText = sortedClientes[0][0];
+                document.getElementById('lbl-top-cliente-monto').innerText = "$" + sortedClientes[0][1].total.toFixed(2) + " (" + sortedClientes[0][1].compras + " compras)";
             }
         }
 
