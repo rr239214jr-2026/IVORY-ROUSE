@@ -3,16 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Control de Envíos</title>
+    <title>Control de Envíos & Analytics</title>
     
-    <!-- CONFIGURACIÓN PWA PARA ANDROID / MÓVIL -->
+    <!-- CONFIGURACIÓN PWA PARA ANDROID -->
     <meta name="theme-color" content="#0f172a">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Control Envíos">
     
-    <!-- Manifest en línea mediante Data URI (No requiere archivo externo) -->
     <link rel="manifest" href='data:application/manifest+json,{
       "name": "Control de Envíos y Finanzas",
       "short_name": "EnvíosApp",
@@ -25,8 +24,7 @@
         {
           "src": "https://cdn-icons-png.flaticon.com/512/689/689307.png",
           "sizes": "512x512",
-          "type": "image/png",
-          "purpose": "any maskable"
+          "type": "image/png"
         }
       ]
     }'>
@@ -39,9 +37,8 @@
 
     <div class="flex flex-col md:flex-row min-h-screen">
 
-        <!-- MARCO LATERAL / MENÚ SUPERIOR (DESKTOP) Y NAVEGACIÓN INFERIOR TIPO APP (MÓVIL) -->
+        <!-- MARCO LATERAL / MENÚ SUPERIOR (DESKTOP) -->
         <aside class="w-full md:w-64 bg-slate-900 text-white p-4 flex flex-col justify-between shadow-lg">
-            <!-- Encabezado / Logo -->
             <div class="flex items-center justify-between md:justify-start space-x-3 mb-2 md:mb-8 px-2">
                 <div class="flex items-center space-x-3">
                     <i class="fa-solid fa-boxes-packing text-indigo-400 text-2xl"></i>
@@ -50,29 +47,32 @@
                         <span class="text-xs text-slate-400">Android Web App</span>
                     </div>
                 </div>
-                <!-- Botón de instalación PWA en Android -->
                 <button id="btn-instalar" class="hidden bg-indigo-600 hover:bg-indigo-500 text-white text-xs px-3 py-1.5 rounded-full font-bold transition">
                     <i class="fa-solid fa-download mr-1"></i> Instalar
                 </button>
             </div>
 
-            <!-- Navegación Escritorio (Oculta en Pantallas Pequeñas) -->
+            <!-- Navegación Escritorio (5 Pestañas) -->
             <nav class="hidden md:block space-y-2">
-                <button onclick="showTab('tab-resumen')" id="btn-tab-resumen-dt" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg bg-indigo-600 text-white text-left transition font-medium shadow">
-                    <i class="fa-solid fa-chart-line text-indigo-200 w-5"></i>
-                    <span>1. Resumen Financiero</span>
+                <button onclick="showTab('tab-mercado')" id="btn-tab-mercado-dt" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg bg-indigo-600 text-white text-left transition font-medium shadow">
+                    <i class="fa-solid fa-chart-pie text-indigo-200 w-5"></i>
+                    <span>1. Estudio de Mercado</span>
+                </button>
+                <button onclick="showTab('tab-resumen')" id="btn-tab-resumen-dt" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-slate-800 text-slate-300 text-left transition font-medium">
+                    <i class="fa-solid fa-chart-line text-indigo-400 w-5"></i>
+                    <span>2. Resumen Financiero</span>
                 </button>
                 <button onclick="showTab('tab-ingreso')" id="btn-tab-ingreso-dt" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-slate-800 text-slate-300 text-left transition font-medium">
                     <i class="fa-solid fa-box-archive text-indigo-400 w-5"></i>
-                    <span>2. Ingresar Paquete</span>
+                    <span>3. Ingresar Paquete</span>
                 </button>
                 <button onclick="showTab('tab-por-cobrar')" id="btn-tab-por-cobrar-dt" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-slate-800 text-slate-300 text-left transition font-medium">
                     <i class="fa-solid fa-hand-holding-dollar text-indigo-400 w-5"></i>
-                    <span>3. Dinero en Calle</span>
+                    <span>4. Dinero en Calle</span>
                 </button>
                 <button onclick="showTab('tab-historial')" id="btn-tab-historial-dt" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-slate-800 text-slate-300 text-left transition font-medium">
                     <i class="fa-solid fa-clock-rotate-left text-indigo-400 w-5"></i>
-                    <span>4. Historial</span>
+                    <span>5. Historial</span>
                 </button>
             </nav>
 
@@ -81,22 +81,26 @@
             </div>
         </aside>
 
-        <!-- BARRA DE NAVEGACIÓN INFERIOR (ESTILO APP NATIVA PARA ANDROID) -->
-        <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-slate-900 border-t border-slate-800 z-50 flex justify-around p-2 text-slate-400 text-xs font-medium">
-            <button onclick="showTab('tab-resumen')" id="btn-tab-resumen-mb" class="nav-btn-mb flex flex-col items-center py-1 text-indigo-400">
-                <i class="fa-solid fa-chart-line text-lg mb-0.5"></i>
-                <span>Resumen</span>
+        <!-- BARRA DE NAVEGACIÓN INFERIOR (MÓVIL ANDROID) -->
+        <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-slate-900 border-t border-slate-800 z-50 flex justify-around p-2 text-slate-400 text-[10px] font-medium">
+            <button onclick="showTab('tab-mercado')" id="btn-tab-mercado-mb" class="nav-btn-mb flex flex-col items-center py-1 text-indigo-400">
+                <i class="fa-solid fa-chart-pie text-base mb-0.5"></i>
+                <span>Mercado</span>
+            </button>
+            <button onclick="showTab('tab-resumen')" id="btn-tab-resumen-mb" class="nav-btn-mb flex flex-col items-center py-1">
+                <i class="fa-solid fa-chart-line text-base mb-0.5"></i>
+                <span>Finanzas</span>
             </button>
             <button onclick="showTab('tab-ingreso')" id="btn-tab-ingreso-mb" class="nav-btn-mb flex flex-col items-center py-1">
-                <i class="fa-solid fa-box-archive text-lg mb-0.5"></i>
+                <i class="fa-solid fa-box-archive text-base mb-0.5"></i>
                 <span>Ingresar</span>
             </button>
             <button onclick="showTab('tab-por-cobrar')" id="btn-tab-por-cobrar-mb" class="nav-btn-mb flex flex-col items-center py-1">
-                <i class="fa-solid fa-hand-holding-dollar text-lg mb-0.5"></i>
+                <i class="fa-solid fa-hand-holding-dollar text-base mb-0.5"></i>
                 <span>Por Cobrar</span>
             </button>
             <button onclick="showTab('tab-historial')" id="btn-tab-historial-mb" class="nav-btn-mb flex flex-col items-center py-1">
-                <i class="fa-solid fa-clock-rotate-left text-lg mb-0.5"></i>
+                <i class="fa-solid fa-clock-rotate-left text-base mb-0.5"></i>
                 <span>Historial</span>
             </button>
         </nav>
@@ -104,10 +108,146 @@
         <!-- CONTENIDO PRINCIPAL -->
         <main class="flex-1 p-4 md:p-8 overflow-y-auto">
 
-            <!-- PESTAÑA 1: RESUMEN FINANCIERO -->
-            <section id="tab-resumen" class="space-y-6">
+            <!-- PESTAÑA 1: ESTUDIO DE MERCADO & TOP ANALYTICS -->
+            <section id="tab-mercado" class="space-y-6">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                    <div>
+                        <h2 class="text-xl md:text-2xl font-bold text-slate-900">1. Estudio de Mercado & Inteligencia</h2>
+                        <p class="text-xs text-slate-500">Analiza las zonas de El Salvador con más ventas y tus clientes top para orientar futuras inversiones.</p>
+                    </div>
+                    <span class="text-xs font-semibold bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full">Análisis Estratégico</span>
+                </div>
+
+                <!-- Tarjetas Estratégicas -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
+                        <div class="flex items-center justify-between text-slate-500 mb-2">
+                            <span class="text-xs font-bold uppercase">Departamento Top #1</span>
+                            <i class="fa-solid fa-map-location-dot text-indigo-500 text-lg"></i>
+                        </div>
+                        <p class="text-2xl font-extrabold text-slate-900" id="lbl-top-depto">San Salvador</p>
+                        <p class="text-xs text-indigo-600 font-semibold mt-1">45% de las ventas totales</p>
+                    </div>
+
+                    <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
+                        <div class="flex items-center justify-between text-slate-500 mb-2">
+                            <span class="text-xs font-bold uppercase">Cliente VIP del Mes</span>
+                            <i class="fa-solid fa-crown text-amber-500 text-lg"></i>
+                        </div>
+                        <p class="text-2xl font-extrabold text-slate-900" id="lbl-top-cliente">María López</p>
+                        <p class="text-xs text-amber-600 font-semibold mt-1">$140.00 acumulados (4 compras)</p>
+                    </div>
+
+                    <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
+                        <div class="flex items-center justify-between text-slate-500 mb-2">
+                            <span class="text-xs font-bold uppercase">Encomendista Líder</span>
+                            <i class="fa-solid fa-truck-fast text-emerald-500 text-lg"></i>
+                        </div>
+                        <p class="text-2xl font-extrabold text-slate-900" id="lbl-top-encomendista">PEDIDOS EXPRESS</p>
+                        <p class="text-xs text-emerald-600 font-semibold mt-1">92% entregas sin devolución</p>
+                    </div>
+                </div>
+
+                <!-- Gráficos y Listas de Estudio -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    
+                    <!-- Top Departamentos en El Salvador -->
+                    <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 space-y-4">
+                        <h3 class="font-bold text-slate-800 text-base flex items-center space-x-2">
+                            <i class="fa-solid fa-chart-column text-indigo-600"></i>
+                            <span>Ventas por Departamento (El Salvador)</span>
+                        </h3>
+                        <div id="lista-top-deptos" class="space-y-3">
+                            <div>
+                                <div class="flex justify-between text-xs font-semibold mb-1">
+                                    <span>San Salvador</span>
+                                    <span>$450.00 (45%)</span>
+                                </div>
+                                <div class="w-full bg-slate-100 rounded-full h-2.5">
+                                    <div class="bg-indigo-600 h-2.5 rounded-full" style="width: 45%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-xs font-semibold mb-1">
+                                    <span>La Libertad</span>
+                                    <span>$250.00 (25%)</span>
+                                </div>
+                                <div class="w-full bg-slate-100 rounded-full h-2.5">
+                                    <div class="bg-indigo-500 h-2.5 rounded-full" style="width: 25%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-xs font-semibold mb-1">
+                                    <span>Santa Ana</span>
+                                    <span>$180.00 (18%)</span>
+                                </div>
+                                <div class="w-full bg-slate-100 rounded-full h-2.5">
+                                    <div class="bg-indigo-400 h-2.5 rounded-full" style="width: 18%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-xs font-semibold mb-1">
+                                    <span>San Miguel</span>
+                                    <span>$120.00 (12%)</span>
+                                </div>
+                                <div class="w-full bg-slate-100 rounded-full h-2.5">
+                                    <div class="bg-indigo-300 h-2.5 rounded-full" style="width: 12%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Top Clientes que más generan dinero -->
+                    <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 space-y-4">
+                        <h3 class="font-bold text-slate-800 text-base flex items-center space-x-2">
+                            <i class="fa-solid fa-trophy text-amber-500"></i>
+                            <span>Ranking Top Clientes (Mayor Facturación)</span>
+                        </h3>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-xs">
+                                <thead class="bg-slate-50 border-b text-slate-500 uppercase">
+                                    <tr>
+                                        <th class="p-2">#</th>
+                                        <th class="p-2">Cliente</th>
+                                        <th class="p-2">Departamento</th>
+                                        <th class="p-2 text-right">Compras</th>
+                                        <th class="p-2 text-right">Total Acumulado</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tabla-top-clientes-body" class="divide-y divide-slate-100">
+                                    <tr>
+                                        <td class="p-2 font-bold text-indigo-600">1</td>
+                                        <td class="p-2 font-semibold">María López</td>
+                                        <td class="p-2 text-slate-500">San Salvador</td>
+                                        <td class="p-2 text-right">4</td>
+                                        <td class="p-2 text-right font-bold text-emerald-600">$140.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-2 font-bold text-indigo-600">2</td>
+                                        <td class="p-2 font-semibold">Carlos Gómez</td>
+                                        <td class="p-2 text-slate-500">La Libertad</td>
+                                        <td class="p-2 text-right">3</td>
+                                        <td class="p-2 text-right font-bold text-emerald-600">$105.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-2 font-bold text-indigo-600">3</td>
+                                        <td class="p-2 font-semibold">Ana Rivas</td>
+                                        <td class="p-2 text-slate-500">Santa Ana</td>
+                                        <td class="p-2 text-right">2</td>
+                                        <td class="p-2 text-right font-bold text-emerald-600">$75.00</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- PESTAÑA 2: RESUMEN FINANCIERO -->
+            <section id="tab-resumen" class="space-y-6 hidden">
                 <div class="flex justify-between items-center">
-                    <h2 class="text-xl md:text-2xl font-bold text-slate-900">1. Resumen Financiero</h2>
+                    <h2 class="text-xl md:text-2xl font-bold text-slate-900">2. Resumen Financiero</h2>
                     <span class="text-xs font-semibold bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full">En tiempo real</span>
                 </div>
                 
@@ -118,7 +258,7 @@
                             <i class="fa-solid fa-sack-dollar text-emerald-500"></i>
                         </div>
                         <p class="text-3xl font-extrabold text-emerald-600" id="lbl-ganancia-neta">$0.00</p>
-                        <p class="text-xs text-slate-400 mt-1">Ventas - Costo - Fletes</p>
+                        <p class="text-xs text-slate-400 mt-1">Ventas - Costos - Fletes</p>
                     </div>
 
                     <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
@@ -141,25 +281,26 @@
 
                     <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
                         <div class="flex items-center justify-between text-slate-500 mb-2">
-                            <span class="text-xs font-bold uppercase">Gasto Encomiendas</span>
-                            <i class="fa-solid fa-truck-ramp-box text-amber-500"></i>
+                            <span class="text-xs font-bold uppercase">Pérdida Devoluciones</span>
+                            <i class="fa-solid fa-triangle-exclamation text-amber-500"></i>
                         </div>
                         <p class="text-3xl font-extrabold text-amber-600" id="lbl-gasto-envios">$0.00</p>
-                        <p class="text-xs text-slate-400 mt-1">Fletes acumulados</p>
+                        <p class="text-xs text-slate-400 mt-1">Fletes sin venta concretada</p>
                     </div>
                 </div>
             </section>
 
-            <!-- PESTAÑA 2: INGRESO DE PAQUETE -->
+            <!-- PESTAÑA 3: INGRESO DE PAQUETE -->
             <section id="tab-ingreso" class="hidden max-w-2xl mx-auto space-y-6">
                 <div>
-                    <h2 class="text-xl md:text-2xl font-bold text-slate-900">2. Ingresar Nuevo Paquete</h2>
-                    <p class="text-xs md:text-sm text-slate-500">Asigna el SKU y los detalles del envío.</p>
+                    <h2 class="text-xl md:text-2xl font-bold text-slate-900">3. Ingresar Nuevo Paquete</h2>
+                    <p class="text-xs md:text-sm text-slate-500">Completa los datos del cliente, paquete y ubicación en El Salvador.</p>
                 </div>
 
                 <div class="bg-white p-5 md:p-6 rounded-xl shadow-sm border border-slate-200">
                     <form id="form-registro-paquete" onsubmit="guardarPaquete(event)" class="space-y-4">
                         
+                        <!-- SKU -->
                         <div class="bg-indigo-50 p-4 rounded-lg border border-indigo-100">
                             <label class="block text-xs font-bold text-indigo-900 uppercase mb-1">
                                 Código SKU (Formateo Automático)
@@ -175,32 +316,73 @@
                             </p>
                         </div>
 
+                        <!-- Datos Cliente -->
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
-                                <label class="block text-xs font-semibold text-slate-600 mb-1">Cliente</label>
-                                <input type="text" id="cliente" required placeholder="Nombre completo" class="w-full p-2.5 border rounded-lg text-sm outline-none focus:border-indigo-500">
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Nombre del Cliente</label>
+                                <input type="text" id="cliente" required placeholder="Ej: María López" class="w-full p-2.5 border rounded-lg text-sm outline-none focus:border-indigo-500">
                             </div>
                             <div>
-                                <label class="block text-xs font-semibold text-slate-600 mb-1">Descripción / Prenda</label>
-                                <input type="text" id="articulo" required placeholder="Ej. Camisa Talla M" class="w-full p-2.5 border rounded-lg text-sm outline-none focus:border-indigo-500">
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Número de Celular</label>
+                                <input type="tel" id="celular" required placeholder="Ej: 77778888" class="w-full p-2.5 border rounded-lg text-sm outline-none focus:border-indigo-500">
                             </div>
                         </div>
 
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <!-- Departamento de El Salvador + Dirección / Municipio -->
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Departamento (SV)</label>
+                                <select id="departamento" required class="w-full p-2.5 border rounded-lg text-sm outline-none focus:border-indigo-500">
+                                    <option value="">Selecciona...</option>
+                                    <option value="Ahuachapán">Ahuachapán</option>
+                                    <option value="Cabañas">Cabañas</option>
+                                    <option value="Chalatenango">Chalatenango</option>
+                                    <option value="Cuscatlán">Cuscatlán</option>
+                                    <option value="La Libertad">La Libertad</option>
+                                    <option value="La Paz">La Paz</option>
+                                    <option value="La Unión">La Unión</option>
+                                    <option value="Morazán">Morazán</option>
+                                    <option value="San Miguel">San Miguel</option>
+                                    <option value="San Salvador">San Salvador</option>
+                                    <option value="San Vicente">San Vicente</option>
+                                    <option value="Santa Ana">Santa Ana</option>
+                                    <option value="Sonsonate">Sonsonate</option>
+                                    <option value="Usulután">Usulután</option>
+                                </select>
+                            </div>
+                            <div class="sm:col-span-2">
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Municipio / Dirección Corta</label>
+                                <input type="text" id="destino" required placeholder="Ej. Soyapango / Plaza Soyapango" class="w-full p-2.5 border rounded-lg text-sm outline-none focus:border-indigo-500">
+                            </div>
+                        </div>
+
+                        <!-- Descripción Prendas -->
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Descripción / Prenda</label>
+                            <input type="text" id="articulo" required placeholder="Ej. Blusa Roja Talla M" class="w-full p-2.5 border rounded-lg text-sm outline-none focus:border-indigo-500">
+                        </div>
+
+                        <!-- Encomendista y Fechas -->
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                             <div>
                                 <label class="block text-xs font-semibold text-slate-600 mb-1">Encomendista</label>
-                                <input type="text" id="encomendista" list="lista-encomendistas" required placeholder="Escribe o selecciona..." class="w-full p-2.5 border rounded-lg text-sm outline-none focus:border-indigo-500">
+                                <input type="text" id="encomendista" list="lista-encomendistas" required placeholder="Selecciona..." class="w-full p-2.5 border rounded-lg text-sm outline-none focus:border-indigo-500">
                                 <datalist id="lista-encomendistas">
                                     <option value="PEDIDOS EXPRESS"></option>
                                     <option value="CASILLERO"></option>
                                 </datalist>
                             </div>
                             <div>
-                                <label class="block text-xs font-semibold text-slate-600 mb-1">Fecha Entrega</label>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Fecha Encomendista</label>
+                                <input type="date" id="fecha-encomendista" required class="w-full p-2.5 border rounded-lg text-sm outline-none focus:border-indigo-500">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Fecha Entrega Cliente</label>
                                 <input type="date" id="fecha-entrega" required class="w-full p-2.5 border rounded-lg text-sm outline-none focus:border-indigo-500">
                             </div>
                         </div>
 
+                        <!-- Montos Financieros -->
                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 bg-slate-50 p-4 rounded-lg">
                             <div>
                                 <label class="block text-xs font-semibold text-slate-600 mb-1">Costo Prenda ($)</label>
@@ -224,15 +406,15 @@
                 </div>
             </section>
 
-            <!-- PESTAÑA 3: DINERO EN CALLE -->
+            <!-- PESTAÑA 4: DINERO EN CALLE -->
             <section id="tab-por-cobrar" class="space-y-6 hidden">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
                     <div>
-                        <h2 class="text-xl md:text-2xl font-bold text-slate-900">3. Dinero en Calle</h2>
+                        <h2 class="text-xl md:text-2xl font-bold text-slate-900">4. Dinero en Calle (Por Cobrar)</h2>
                         <p class="text-xs text-slate-500">Paquetes entregados hace <b>1 día o más</b>.</p>
                     </div>
                     <div class="bg-amber-100 text-amber-900 px-4 py-2 rounded-lg text-xs md:text-sm font-bold">
-                        Total por Retirar: <span id="total-dinero-calle">$0.00</span>
+                        Total por Retirar: <span id="total-dinero-calle">$35.00</span>
                     </div>
                 </div>
 
@@ -241,23 +423,52 @@
                         <thead class="bg-slate-50 border-b text-slate-600 uppercase text-xs">
                             <tr>
                                 <th class="p-3 md:p-4">SKU</th>
-                                <th class="p-3 md:p-4">Cliente</th>
-                                <th class="p-3 md:p-4">Fecha</th>
+                                <th class="p-3 md:p-4">Cliente / Celular</th>
+                                <th class="p-3 md:p-4">Depto / Destino</th>
                                 <th class="p-3 md:p-4">Encomendista</th>
-                                <th class="p-3 md:p-4 text-right">Monto</th>
-                                <th class="p-3 md:p-4 text-center">Acción</th>
+                                <th class="p-3 md:p-4 text-right">Monto Cobro</th>
+                                <th class="p-3 md:p-4 text-center">Acciones</th>
                             </tr>
                         </thead>
                         <tbody id="tabla-cobros-body" class="divide-y divide-slate-100">
+                            <tr id="fila-SKU-000001">
+                                <td class="p-3 md:p-4 font-bold font-mono text-indigo-600">SKU-000001</td>
+                                <td class="p-3 md:p-4">
+                                    <div class="font-medium">María López</div>
+                                    <a href="https://wa.me/50377778888" target="_blank" class="text-xs text-emerald-600 hover:underline flex items-center space-x-1">
+                                        <i class="fa-brands fa-whatsapp"></i> <span>7777-8888</span>
+                                    </a>
+                                </td>
+                                <td class="p-3 md:p-4 text-slate-600">
+                                    <span class="font-bold text-slate-800">San Salvador</span> / Soyapango
+                                </td>
+                                <td class="p-3 md:p-4 font-semibold text-slate-700">PEDIDOS EXPRESS</td>
+                                <td class="p-3 md:p-4 text-right font-extrabold text-slate-900">$35.00</td>
+                                <td class="p-3 md:p-4">
+                                    <div class="flex items-center justify-center space-x-1.5">
+                                        <button onclick="abrirModalEdicion('SKU-000001')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 p-2 rounded-lg font-bold transition active:scale-95" title="Corregir datos">
+                                            <i class="fa-solid fa-pen-to-square"></i>
+                                        </button>
+                                        <button onclick="marcarEstado('SKU-000001', 'Cobrado')" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs px-2.5 py-1.5 rounded-lg font-bold flex items-center space-x-1 shadow transition active:scale-95">
+                                            <i class="fa-solid fa-circle-check"></i>
+                                            <span>Cobrado</span>
+                                        </button>
+                                        <button onclick="marcarEstado('SKU-000001', 'Devuelto')" class="bg-rose-600 hover:bg-rose-700 text-white text-xs px-2.5 py-1.5 rounded-lg font-bold flex items-center space-x-1 shadow transition active:scale-95">
+                                            <i class="fa-solid fa-rotate-left"></i>
+                                            <span>Devuelto</span>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
             </section>
 
-            <!-- PESTAÑA 4: HISTORIAL Y FILTROS -->
+            <!-- PESTAÑA 5: HISTORIAL Y FILTROS -->
             <section id="tab-historial" class="space-y-6 hidden">
                 <div>
-                    <h2 class="text-xl md:text-2xl font-bold text-slate-900">4. Historial</h2>
+                    <h2 class="text-xl md:text-2xl font-bold text-slate-900">5. Historial</h2>
                     <p class="text-xs text-slate-500">Filtra tus envíos por fecha o estado.</p>
                 </div>
 
@@ -304,9 +515,9 @@
                         <thead class="bg-slate-50 border-b text-slate-600 uppercase text-xs">
                             <tr>
                                 <th class="p-3 md:p-4">SKU</th>
-                                <th class="p-3 md:p-4">Fecha</th>
+                                <th class="p-3 md:p-4">Fecha Enc.</th>
                                 <th class="p-3 md:p-4">Cliente</th>
-                                <th class="p-3 md:p-4">Artículo</th>
+                                <th class="p-3 md:p-4">Depto / Destino</th>
                                 <th class="p-3 md:p-4">Encomendista</th>
                                 <th class="p-3 md:p-4 text-right">Costo</th>
                                 <th class="p-3 md:p-4 text-right">Cobro</th>
@@ -323,37 +534,133 @@
         </main>
     </div>
 
-    <!-- LÓGICA JAVASCRIPT & PWA REGISTRATION -->
+    <!-- MODAL DE EDICIÓN -->
+    <div id="modal-edicion" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center border-b pb-3">
+                <h3 class="font-bold text-slate-900 text-lg flex items-center space-x-2">
+                    <i class="fa-solid fa-pen-to-square text-indigo-600"></i>
+                    <span>Corregir Paquete <span id="modal-sku-title" class="font-mono text-indigo-600">SKU-000000</span></span>
+                </h3>
+                <button onclick="cerrarModalEdicion()" class="text-slate-400 hover:text-slate-600 p-1">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+
+            <form id="form-editar-paquete" onsubmit="guardarEdicion(event)" class="space-y-3">
+                <input type="hidden" id="edit-sku">
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Cliente</label>
+                        <input type="text" id="edit-cliente" required class="w-full p-2 border rounded-lg text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Celular</label>
+                        <input type="tel" id="edit-celular" required class="w-full p-2 border rounded-lg text-sm">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Departamento (SV)</label>
+                        <select id="edit-departamento" required class="w-full p-2 border rounded-lg text-sm">
+                            <option value="Ahuachapán">Ahuachapán</option>
+                            <option value="Cabañas">Cabañas</option>
+                            <option value="Chalatenango">Chalatenango</option>
+                            <option value="Cuscatlán">Cuscatlán</option>
+                            <option value="La Libertad">La Libertad</option>
+                            <option value="La Paz">La Paz</option>
+                            <option value="La Unión">La Unión</option>
+                            <option value="Morazán">Morazán</option>
+                            <option value="San Miguel">San Miguel</option>
+                            <option value="San Salvador">San Salvador</option>
+                            <option value="San Vicente">San Vicente</option>
+                            <option value="Santa Ana">Santa Ana</option>
+                            <option value="Sonsonate">Sonsonate</option>
+                            <option value="Usulután">Usulután</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Municipio / Destino</label>
+                        <input type="text" id="edit-destino" required class="w-full p-2 border rounded-lg text-sm">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Artículo</label>
+                    <input type="text" id="edit-articulo" required class="w-full p-2 border rounded-lg text-sm">
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Encomendista</label>
+                        <input type="text" id="edit-encomendista" required class="w-full p-2 border rounded-lg text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Fecha Enc.</label>
+                        <input type="date" id="edit-fecha-enc" required class="w-full p-2 border rounded-lg text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Fecha Entrega</label>
+                        <input type="date" id="edit-fecha-entrega" required class="w-full p-2 border rounded-lg text-sm">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 bg-slate-50 p-3 rounded-lg border">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Costo ($)</label>
+                        <input type="number" step="0.01" id="edit-costo-prenda" required class="w-full p-2 border rounded-lg text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Cobro ($)</label>
+                        <input type="number" step="0.01" id="edit-precio-cobrar" required class="w-full p-2 border rounded-lg text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Envío ($)</label>
+                        <input type="number" step="0.01" id="edit-costo-envio" required class="w-full p-2 border rounded-lg text-sm">
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between pt-3 border-t">
+                    <button type="button" onclick="eliminarPaquete()" class="bg-rose-50 text-rose-600 hover:bg-rose-100 text-xs px-3 py-2 rounded-lg font-bold flex items-center space-x-1">
+                        <i class="fa-solid fa-trash-can"></i>
+                        <span>Eliminar</span>
+                    </button>
+                    <div class="flex space-x-2">
+                        <button type="button" onclick="cerrarModalEdicion()" class="bg-slate-200 text-slate-700 text-xs px-4 py-2 rounded-lg font-bold">Cancelar</button>
+                        <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs px-4 py-2 rounded-lg font-bold shadow">Guardar Cambios</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- LÓGICA JAVASCRIPT -->
     <script>
         const proveedores = new Set(["PEDIDOS EXPRESS", "CASILLERO"]);
 
-        // NAVEGACIÓN PESTAÑAS (MÓVIL & ESCRITORIO)
         function showTab(tabId) {
             document.querySelectorAll('main > section').forEach(sec => sec.classList.add('hidden'));
             
-            // Desactivar botones desktop
             document.querySelectorAll('.nav-btn').forEach(btn => {
                 btn.classList.remove('bg-indigo-600', 'text-white', 'shadow');
                 btn.classList.add('hover:bg-slate-800', 'text-slate-300');
             });
 
-            // Desactivar botones móvil
             document.querySelectorAll('.nav-btn-mb').forEach(btn => {
                 btn.classList.remove('text-indigo-400');
                 btn.classList.add('text-slate-400');
             });
 
-            // Mostrar sección activa
             document.getElementById(tabId).classList.remove('hidden');
 
-            // Activar botón seleccionado desktop
             const activeBtnDt = document.getElementById('btn-' + tabId + '-dt');
             if (activeBtnDt) {
                 activeBtnDt.classList.add('bg-indigo-600', 'text-white', 'shadow');
                 activeBtnDt.classList.remove('hover:bg-slate-800', 'text-slate-300');
             }
 
-            // Activar botón seleccionado móvil
             const activeBtnMb = document.getElementById('btn-' + tabId + '-mb');
             if (activeBtnMb) {
                 activeBtnMb.classList.add('text-indigo-400');
@@ -361,7 +668,6 @@
             }
         }
 
-        // FORMATEADOR SKU (Ej: 1 -> SKU-000001)
         function formatearSKU(valor) {
             if (!valor) {
                 document.getElementById('sku-preview').innerText = 'SKU-000000';
@@ -386,12 +692,68 @@
                 document.getElementById('lista-encomendistas').appendChild(option);
             }
 
-            alert("¡Paquete " + skuFinal + " guardado!");
+            const paqueteData = {
+                sku: skuFinal,
+                cliente: document.getElementById('cliente').value,
+                celular: document.getElementById('celular').value,
+                departamento: document.getElementById('departamento').value,
+                destino: document.getElementById('destino').value,
+                articulo: document.getElementById('articulo').value,
+                encomendista: encomendistaNombre,
+                fechaEncomendista: document.getElementById('fecha-encomendista').value,
+                fechaEntrega: document.getElementById('fecha-entrega').value,
+                costoPrenda: parseFloat(document.getElementById('costo-prenda').value),
+                precioCobrar: parseFloat(document.getElementById('precio-cobrar').value),
+                costoEnvio: parseFloat(document.getElementById('costo-envio').value),
+                estado: 'En Tránsito'
+            };
+
+            console.log("Enviando paquete a Sheets:", paqueteData);
+            alert("¡Paquete " + skuFinal + " guardado exitosamente!");
             document.getElementById('form-registro-paquete').reset();
             document.getElementById('sku-preview').innerText = 'SKU-000000';
         }
 
-        // PROMPT DE INSTALACIÓN PWA PARA ANDROID
+        function marcarEstado(sku, nuevoEstado) {
+            let mensaje = (nuevoEstado === 'Cobrado') 
+                ? `¿Confirmas cobro de liquidación del paquete ${sku}?`
+                : `¿El paquete ${sku} fue DEVUELTO?`;
+
+            if (confirm(mensaje)) {
+                const fila = document.getElementById('fila-' + sku);
+                if (fila) fila.remove();
+                alert(`Paquete ${sku} actualizado a "${nuevoEstado}".`);
+            }
+        }
+
+        function abrirModalEdicion(sku) {
+            document.getElementById('modal-sku-title').innerText = sku;
+            document.getElementById('edit-sku').value = sku;
+            document.getElementById('modal-edicion').classList.remove('hidden');
+        }
+
+        function cerrarModalEdicion() {
+            document.getElementById('modal-edicion').classList.add('hidden');
+        }
+
+        function guardarEdicion(event) {
+            event.preventDefault();
+            const sku = document.getElementById('edit-sku').value;
+            alert("¡Cambios guardados para " + sku + "!");
+            cerrarModalEdicion();
+        }
+
+        function eliminarPaquete() {
+            const sku = document.getElementById('edit-sku').value;
+            if (confirm(`¿ELIMINAR paquete ${sku}?`)) {
+                const fila = document.getElementById('fila-' + sku);
+                if (fila) fila.remove();
+                alert(`Paquete ${sku} eliminado.`);
+                cerrarModalEdicion();
+            }
+        }
+
+        // PROMPT DE INSTALACIÓN PWA
         let deferredPrompt;
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
@@ -402,21 +764,17 @@
             btnInstalar.addEventListener('click', () => {
                 btnInstalar.classList.add('hidden');
                 deferredPrompt.prompt();
-                deferredPrompt.userChoice.then((choiceResult) => {
-                    deferredPrompt = null;
-                });
+                deferredPrompt.userChoice.then(() => { deferredPrompt = null; });
             });
         });
 
-        // REGISTRO DE SERVICE WORKER VÍA BLOB (SIN ARCHIVOS ADICIONALES)
         if ('serviceWorker' in navigator) {
             const swCode = `
                 self.addEventListener('install', e => self.skipWaiting());
                 self.addEventListener('fetch', e => e.respondWith(fetch(e.request)));
             `;
             const blob = new Blob([swCode], { type: 'application/javascript' });
-            navigator.serviceWorker.register(URL.createObjectURL(blob))
-                .catch(err => console.log('SW Script bypassed', err));
+            navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(err => {});
         }
     </script>
 </body>
