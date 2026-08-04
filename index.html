@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Control de Envíos y Finanzas</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Íconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-slate-100 font-sans text-slate-800">
+
+    <div class="flex flex-col md:flex-row min-h-screen">
+
+        <!-- MARCO LATERAL / MENÚ DE NAVEGACIÓN -->
+        <aside class="w-full md:w-64 bg-slate-900 text-white p-4 flex flex-col justify-between shadow-lg">
+            <div>
+                <!-- Logotipo / Encabezado -->
+                <div class="flex items-center space-x-3 mb-8 px-2">
+                    <i class="fa-solid fa-boxes-packing text-indigo-400 text-2xl"></i>
+                    <div>
+                        <h1 class="font-bold text-lg leading-tight tracking-wide">Control Envíos</h1>
+                        <span class="text-xs text-slate-400">Gestión & Finanzas</span>
+                    </div>
+                </div>
+
+                <!-- Botones de Navegación -->
+                <nav class="space-y-2">
+                    <button onclick="showTab('tab-resumen')" id="btn-tab-resumen" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg bg-indigo-600 text-white text-left transition font-medium shadow">
+                        <i class="fa-solid fa-chart-line text-indigo-200 w-5"></i>
+                        <span>1. Resumen Financiero</span>
+                    </button>
+                    
+                    <button onclick="showTab('tab-ingreso')" id="btn-tab-ingreso" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-slate-800 text-slate-300 text-left transition font-medium">
+                        <i class="fa-solid fa-box-archive text-indigo-400 w-5"></i>
+                        <span>2. Ingresar Paquete</span>
+                    </button>
+                    
+                    <button onclick="showTab('tab-por-cobrar')" id="btn-tab-por-cobrar" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-slate-800 text-slate-300 text-left transition font-medium">
+                        <i class="fa-solid fa-hand-holding-dollar text-indigo-400 w-5"></i>
+                        <span>3. Dinero en Calle</span>
+                    </button>
+                </nav>
+            </div>
+
+            <div class="mt-8 pt-4 border-t border-slate-800 text-xs text-slate-500 text-center">
+                Conectado a Google Sheets
+            </div>
+        </aside>
+
+        <!-- CONTENIDO PRINCIPAL -->
+        <main class="flex-1 p-4 md:p-8 overflow-y-auto">
+
+            <!-- PESTAÑA 1: RESUMEN FINANCIERO (GANANCIAS Y COSTOS) -->
+            <section id="tab-resumen" class="space-y-6">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-2xl font-bold text-slate-900">1. Resumen Financiero</h2>
+                    <span class="text-xs font-semibold bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full">Actualizado</span>
+                </div>
+                
+                <!-- Tarjetas Principales de Dinero -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <!-- Ganancia Neta -->
+                    <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
+                        <div class="flex items-center justify-between text-slate-500 mb-2">
+                            <span class="text-xs font-bold uppercase">Ganancia Neta</span>
+                            <i class="fa-solid fa-sack-dollar text-emerald-500"></i>
+                        </div>
+                        <p class="text-3xl font-extrabold text-emerald-600" id="lbl-ganancia-neta">$0.00</p>
+                        <p class="text-xs text-slate-400 mt-1">Precio Venta - (Costo + Flete)</p>
+                    </div>
+
+                    <!-- Ingreso Bruto Total -->
+                    <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
+                        <div class="flex items-center justify-between text-slate-500 mb-2">
+                            <span class="text-xs font-bold uppercase">Ventas Totales</span>
+                            <i class="fa-solid fa-cash-register text-indigo-500"></i>
+                        </div>
+                        <p class="text-3xl font-extrabold text-indigo-600" id="lbl-ventas-totales">$0.00</p>
+                        <p class="text-xs text-slate-400 mt-1">Total Cobrado a Clientes</p>
+                    </div>
+
+                    <!-- Costo de Mercadería -->
+                    <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
+                        <div class="flex items-center justify-between text-slate-500 mb-2">
+                            <span class="text-xs font-bold uppercase">Costo de Productos</span>
+                            <i class="fa-solid fa-tags text-rose-500"></i>
+                        </div>
+                        <p class="text-3xl font-extrabold text-rose-600" id="lbl-costo-productos">$0.00</p>
+                        <p class="text-xs text-slate-400 mt-1">Inversión Base en Prenda</p>
+                    </div>
+
+                    <!-- Gastos de Encomienda -->
+                    <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
+                        <div class="flex items-center justify-between text-slate-500 mb-2">
+                            <span class="text-xs font-bold uppercase">Gasto Encomiendas</span>
+                            <i class="fa-solid fa-truck-ramp-box text-amber-500"></i>
+                        </div>
+                        <p class="text-3xl font-extrabold text-amber-600" id="lbl-gasto-envios">$0.00</p>
+                        <p class="text-xs text-slate-400 mt-1">Fletes Pagados</p>
+                    </div>
+                </div>
+
+                <!-- Balance del Negocio -->
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                    <h3 class="font-bold text-slate-800 text-lg mb-4">Métricas Operativas</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
+                        <div class="p-4 bg-slate-50 rounded-lg">
+                            <span class="text-xs font-bold text-slate-500 uppercase">Paquetes Vendidos</span>
+                            <p class="text-2xl font-bold text-slate-800 mt-1" id="lbl-cant-vendidos">0</p>
+                        </div>
+                        <div class="p-4 bg-slate-50 rounded-lg">
+                            <span class="text-xs font-bold text-slate-500 uppercase">Perdidas por Devolución</span>
+                            <p class="text-2xl font-bold text-rose-600 mt-1" id="lbl-perdida-devoluciones">$0.00</p>
+                        </div>
+                        <div class="p-4 bg-slate-50 rounded-lg">
+                            <span class="text-xs font-bold text-slate-500 uppercase">Margen Promedio</span>
+                            <p class="text-2xl font-bold text-emerald-600 mt-1" id="lbl-margen-promedio">0%</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PESTAÑA 2: INGRESO DE PAQUETE (REGISTRO A SHEETS) -->
+            <section id="tab-ingreso" class="hidden max-w-2xl mx-auto space-y-6">
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-900">2. Ingresar Nuevo Paquete</h2>
+                    <p class="text-sm text-slate-500">Los datos ingresados se guardarán automáticamente en tu hoja de Google Sheets.</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                    <form id="form-registro-paquete" onsubmit="guardarPaquete(event)" class="space-y-4">
+                        
+                        <!-- SKU con Formateo Automático -->
+                        <div class="bg-indigo-50 p-4 rounded-lg border border-indigo-100">
+                            <label class="block text-xs font-bold text-indigo-900 uppercase mb-1">
+                                Número / Código SKU (Formateo Automático)
+                            </label>
+                            <div class="flex items-center space-x-2">
+                                <span class="text-sm font-bold text-indigo-700">SKU-</span>
+                                <input type="number" id="sku-input" required placeholder="Ej: 1 o 100" 
+                                    oninput="formatearSKU(this.value)" 
+                                    class="w-full p-2 border rounded-lg text-sm font-mono font-bold focus:ring-2 focus:ring-indigo-500 outline-none">
+                            </div>
+                            <p class="text-xs text-indigo-600 mt-2">
+                                Vista previa SKU final: <span id="sku-preview" class="font-bold font-mono">SKU-000000</span>
+                            </p>
+                        </div>
+
+                        <!-- Datos del Cliente y Producto -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Nombre del Cliente</label>
+                                <input type="text" id="cliente" required placeholder="Nombre completo" class="w-full p-2.5 border rounded-lg text-sm outline-none focus:border-indigo-500">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Descripción / Prenda</label>
+                                <input type="text" id="articulo" required placeholder="Ej. Camisa Talla M" class="w-full p-2.5 border rounded-lg text-sm outline-none focus:border-indigo-500">
+                            </div>
+                        </div>
+
+                        <!-- Encomendista y Fecha Programada -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Empresa Encomendista</label>
+                                <input type="text" id="encomendista" required placeholder="Ej. Encomiendas X" class="w-full p-2.5 border rounded-lg text-sm outline-none focus:border-indigo-500">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Fecha Programada de Entrega</label>
+                                <input type="date" id="fecha-entrega" required class="w-full p-2.5 border rounded-lg text-sm outline-none focus:border-indigo-500">
+                            </div>
+                        </div>
+
+                        <!-- Montos Financieros -->
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-slate-50 p-4 rounded-lg">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Costo Prenda ($)</label>
+                                <input type="number" step="0.01" id="costo-prenda" required placeholder="0.00" class="w-full p-2 border rounded-lg text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Precio a Cobrar ($)</label>
+                                <input type="number" step="0.01" id="precio-cobrar" required placeholder="0.00" class="w-full p-2 border rounded-lg text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Costo Envío ($)</label>
+                                <input type="number" step="0.01" id="costo-envio" required placeholder="0.00" class="w-full p-2 border rounded-lg text-sm">
+                            </div>
+                        </div>
+
+                        <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-lg transition flex items-center justify-center space-x-2 shadow">
+                            <i class="fa-solid fa-cloud-arrow-up"></i>
+                            <span>Registrar en Google Sheets</span>
+                        </button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- PESTAÑA 3: DINERO EN CALLE / COBROS PENDIENTES -->
+            <section id="tab-por-cobrar" class="space-y-6 hidden">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                    <div>
+                        <h2 class="text-2xl font-bold text-slate-900">3. Dinero en Calle (Por Cobrar)</h2>
+                        <p class="text-xs text-slate-500">Se muestran paquetes cuya fecha de entrega programada fue <b>ayer o antes</b>.</p>
+                    </div>
+                    <div class="bg-amber-100 text-amber-900 px-4 py-2 rounded-lg text-sm font-bold">
+                        Total por Retirar: <span id="total-dinero-calle">$0.00</span>
+                    </div>
+                </div>
+
+                <!-- Tabla de Paquetes Habilitados para Cobrar -->
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-x-auto">
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-slate-50 border-b text-slate-600 uppercase text-xs">
+                            <tr>
+                                <th class="p-4">SKU</th>
+                                <th class="p-4">Cliente</th>
+                                <th class="p-4">Fecha Entrega</th>
+                                <th class="p-4">Encomendista</th>
+                                <th class="p-4 text-right">Monto a Retirar</th>
+                                <th class="p-4 text-center">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla-cobros-body" class="divide-y divide-slate-100">
+                            <!-- Ejemplo de fila activa (Generado dinámicamente) -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- LÓGICA JAVASCRIPT -->
+    <script>
+        // 1. Navegación entre Pestañas
+        function showTab(tabId) {
+            // Ocultar todas las secciones
+            document.querySelectorAll('main > section').forEach(sec => sec.classList.add('hidden'));
+            
+            // Resetear estilos de botones
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('bg-indigo-600', 'text-white', 'shadow');
+                btn.classList.add('hover:bg-slate-800', 'text-slate-300');
+            });
+
+            // Mostrar sección activa
+            document.getElementById(tabId).classList.remove('hidden');
+
+            // Activar botón seleccionado
+            const activeBtn = document.getElementById('btn-' + tabId);
+            activeBtn.classList.add('bg-indigo-600', 'text-white', 'shadow');
+            activeBtn.classList.remove('hover:bg-slate-800', 'text-slate-300');
+        }
+
+        // 2. Formateador de SKU con ceros a la izquierda (Ej: 1 -> SKU-000001)
+        function formatearSKU(valor) {
+            if (!valor) {
+                document.getElementById('sku-preview').innerText = 'SKU-000000';
+                return '';
+            }
+            // Agrega ceros a la izquierda hasta completar 6 dígitos
+            const ceros = String(valor).padStart(6, '0');
+            const skuFinal = 'SKU-' + ceros;
+            document.getElementById('sku-preview').innerText = skuFinal;
+            return skuFinal;
+        }
+
+        // 3. Simulación de Envío a Google Sheets
+        function guardarPaquete(event) {
+            event.preventDefault();
+
+            const rawSku = document.getElementById('sku-input').value;
+            const skuFinal = formatearSKU(rawSku);
+
+            const paqueteData = {
+                sku: skuFinal,
+                cliente: document.getElementById('cliente').value,
+                articulo: document.getElementById('articulo').value,
+                encomendista: document.getElementById('encomendista').value,
+                fechaEntrega: document.getElementById('fecha-entrega').value,
+                costoPrenda: parseFloat(document.getElementById('costo-prenda').value),
+                precioCobrar: parseFloat(document.getElementById('precio-cobrar').value),
+                costoEnvio: parseFloat(document.getElementById('costo-envio').value),
+                estado: 'En Tránsito'
+            };
+
+            console.log("Enviando a Google Sheets:", paqueteData);
+            alert("¡Paquete registrado con éxito bajo el " + skuFinal + "!");
+            document.getElementById('form-registro-paquete').reset();
+            document.getElementById('sku-preview').innerText = 'SKU-000000';
+        }
+
+        // 4. Lógica para Filtrar Paquetes "Listos para Cobrar" (1 día después de la entrega)
+        function esAptoParaCobrar(fechaEntregaStr) {
+            const hoy = new Date();
+            hoy.setHours(0,0,0,0); // Resetear horas
+
+            const fechaEntrega = new Date(fechaEntregaStr);
+            fechaEntrega.setHours(0,0,0,0);
+
+            // Calcula la diferencia en días
+            const diferenciaTiempo = hoy - fechaEntrega;
+            const diferenciaDias = diferenciaTiempo / (1000 * 3600 * 24);
+
+            // Es cobrable si ya pasó al menos 1 día entero desde la fecha de entrega
+            return diferenciaDias >= 1;
+        }
+    </script>
+</body>
+</html>
