@@ -52,27 +52,31 @@
                 </button>
             </div>
 
-            <!-- Navegación Escritorio -->
-            <nav class="hidden md:block space-y-2">
-                <button onclick="showTab('tab-mercado')" id="btn-tab-mercado-dt" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg bg-indigo-600 text-white text-left transition font-medium shadow">
+            <!-- Navegación Escritorio (6 Pestañas) -->
+            <nav class="hidden md:block space-y-1.5">
+                <button onclick="showTab('tab-mercado')" id="btn-tab-mercado-dt" class="nav-btn w-full flex items-center space-x-3 px-4 py-2.5 rounded-lg bg-indigo-600 text-white text-left transition font-medium shadow text-sm">
                     <i class="fa-solid fa-chart-pie text-indigo-200 w-5"></i>
-                    <span>1. Estudio de Mercado</span>
+                    <span>1. Mercado</span>
                 </button>
-                <button onclick="showTab('tab-resumen')" id="btn-tab-resumen-dt" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-slate-800 text-slate-300 text-left transition font-medium">
+                <button onclick="showTab('tab-resumen')" id="btn-tab-resumen-dt" class="nav-btn w-full flex items-center space-x-3 px-4 py-2.5 rounded-lg hover:bg-slate-800 text-slate-300 text-left transition font-medium text-sm">
                     <i class="fa-solid fa-chart-line text-indigo-400 w-5"></i>
-                    <span>2. Resumen Financiero</span>
+                    <span>2. Finanzas</span>
                 </button>
-                <button onclick="showTab('tab-ingreso')" id="btn-tab-ingreso-dt" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-slate-800 text-slate-300 text-left transition font-medium">
+                <button onclick="showTab('tab-ingreso')" id="btn-tab-ingreso-dt" class="nav-btn w-full flex items-center space-x-3 px-4 py-2.5 rounded-lg hover:bg-slate-800 text-slate-300 text-left transition font-medium text-sm">
                     <i class="fa-solid fa-box-archive text-indigo-400 w-5"></i>
                     <span>3. Ingresar Paquete</span>
                 </button>
-                <button onclick="showTab('tab-por-cobrar')" id="btn-tab-por-cobrar-dt" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-slate-800 text-slate-300 text-left transition font-medium">
-                    <i class="fa-solid fa-hand-holding-dollar text-indigo-400 w-5"></i>
-                    <span>4. Dinero en Calle</span>
+                <button onclick="showTab('tab-congelados')" id="btn-tab-congelados-dt" class="nav-btn w-full flex items-center space-x-3 px-4 py-2.5 rounded-lg hover:bg-slate-800 text-slate-300 text-left transition font-medium text-sm">
+                    <i class="fa-solid fa-snowflake text-sky-400 w-5"></i>
+                    <span>4. En Encomienda</span>
                 </button>
-                <button onclick="showTab('tab-historial')" id="btn-tab-historial-dt" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-slate-800 text-slate-300 text-left transition font-medium">
+                <button onclick="showTab('tab-por-cobrar')" id="btn-tab-por-cobrar-dt" class="nav-btn w-full flex items-center space-x-3 px-4 py-2.5 rounded-lg hover:bg-slate-800 text-slate-300 text-left transition font-medium text-sm">
+                    <i class="fa-solid fa-hand-holding-dollar text-indigo-400 w-5"></i>
+                    <span>5. Dinero en Calle</span>
+                </button>
+                <button onclick="showTab('tab-historial')" id="btn-tab-historial-dt" class="nav-btn w-full flex items-center space-x-3 px-4 py-2.5 rounded-lg hover:bg-slate-800 text-slate-300 text-left transition font-medium text-sm">
                     <i class="fa-solid fa-clock-rotate-left text-indigo-400 w-5"></i>
-                    <span>5. Historial</span>
+                    <span>6. Historial</span>
                 </button>
             </nav>
 
@@ -81,26 +85,30 @@
             </div>
         </aside>
 
-        <!-- BARRA DE NAVEGACIÓN INFERIOR (MÓVIL ANDROID) -->
-        <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-slate-900 border-t border-slate-800 z-50 flex justify-around p-2 text-slate-400 text-[10px] font-medium">
+        <!-- BARRA DE NAVEGACIÓN INFERIOR (MÓVIL ANDROID - 6 PESTAÑAS) -->
+        <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-slate-900 border-t border-slate-800 z-50 flex justify-around p-1.5 text-slate-400 text-[9px] font-medium">
             <button onclick="showTab('tab-mercado')" id="btn-tab-mercado-mb" class="nav-btn-mb flex flex-col items-center py-1 text-indigo-400">
-                <i class="fa-solid fa-chart-pie text-base mb-0.5"></i>
+                <i class="fa-solid fa-chart-pie text-sm mb-0.5"></i>
                 <span>Mercado</span>
             </button>
             <button onclick="showTab('tab-resumen')" id="btn-tab-resumen-mb" class="nav-btn-mb flex flex-col items-center py-1">
-                <i class="fa-solid fa-chart-line text-base mb-0.5"></i>
+                <i class="fa-solid fa-chart-line text-sm mb-0.5"></i>
                 <span>Finanzas</span>
             </button>
             <button onclick="showTab('tab-ingreso')" id="btn-tab-ingreso-mb" class="nav-btn-mb flex flex-col items-center py-1">
-                <i class="fa-solid fa-box-archive text-base mb-0.5"></i>
+                <i class="fa-solid fa-box-archive text-sm mb-0.5"></i>
                 <span>Ingresar</span>
             </button>
+            <button onclick="showTab('tab-congelados')" id="btn-tab-congelados-mb" class="nav-btn-mb flex flex-col items-center py-1">
+                <i class="fa-solid fa-snowflake text-sm mb-0.5 text-sky-400"></i>
+                <span>En Enc.</span>
+            </button>
             <button onclick="showTab('tab-por-cobrar')" id="btn-tab-por-cobrar-mb" class="nav-btn-mb flex flex-col items-center py-1">
-                <i class="fa-solid fa-hand-holding-dollar text-base mb-0.5"></i>
+                <i class="fa-solid fa-hand-holding-dollar text-sm mb-0.5"></i>
                 <span>Por Cobrar</span>
             </button>
             <button onclick="showTab('tab-historial')" id="btn-tab-historial-mb" class="nav-btn-mb flex flex-col items-center py-1">
-                <i class="fa-solid fa-clock-rotate-left text-base mb-0.5"></i>
+                <i class="fa-solid fa-clock-rotate-left text-sm mb-0.5"></i>
                 <span>Historial</span>
             </button>
         </nav>
@@ -108,7 +116,7 @@
         <!-- CONTENIDO PRINCIPAL -->
         <main class="flex-1 p-4 md:p-8 overflow-y-auto">
 
-            <!-- PESTAÑA 1: ESTUDIO DE MERCADO & TOP ANALYTICS -->
+            <!-- PESTAÑA 1: ESTUDIO DE MERCADO -->
             <section id="tab-mercado" class="space-y-6">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
                     <div>
@@ -118,7 +126,6 @@
                     <span class="text-xs font-semibold bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full">Ivorry Rouse.sv</span>
                 </div>
 
-                <!-- Tarjetas Estratégicas -->
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
                         <div class="flex items-center justify-between text-slate-500 mb-2">
@@ -148,7 +155,6 @@
                     </div>
                 </div>
 
-                <!-- Gráficos y Listas de Estudio -->
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 space-y-4">
                         <h3 class="font-bold text-slate-800 text-base flex items-center space-x-2">
@@ -233,7 +239,7 @@
                 </div>
             </section>
 
-            <!-- PESTAÑA 3: INGRESO DE PAQUETE (AUTOINCREMENTO DE SKU) -->
+            <!-- PESTAÑA 3: INGRESO DE PAQUETE -->
             <section id="tab-ingreso" class="hidden max-w-2xl mx-auto space-y-6">
                 <div>
                     <h2 class="text-xl md:text-2xl font-bold text-slate-900">3. Ingresar Nuevo Paquete</h2>
@@ -243,7 +249,6 @@
                 <div class="bg-white p-5 md:p-6 rounded-xl shadow-sm border border-slate-200">
                     <form id="form-registro-paquete" onsubmit="guardarPaquete(event)" class="space-y-4">
                         
-                        <!-- SKU SUGERIDO AUTOMÁTICAMENTE -->
                         <div class="bg-indigo-50 p-4 rounded-lg border border-indigo-100 flex items-center justify-between">
                             <div>
                                 <label class="block text-xs font-bold text-indigo-900 uppercase">
@@ -257,7 +262,6 @@
                             <input type="hidden" id="sku-input-val">
                         </div>
 
-                        <!-- Datos Cliente -->
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
                                 <label class="block text-xs font-semibold text-slate-600 mb-1">Nombre del Cliente</label>
@@ -269,7 +273,6 @@
                             </div>
                         </div>
 
-                        <!-- Ubicación -->
                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                             <div>
                                 <label class="block text-xs font-semibold text-slate-600 mb-1">Departamento (SV)</label>
@@ -302,7 +305,6 @@
                             <input type="text" id="articulo" required placeholder="Ej. Blusa Roja Talla M" class="w-full p-2.5 border rounded-lg text-sm outline-none focus:border-indigo-500">
                         </div>
 
-                        <!-- Encomendista y Fechas -->
                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                             <div>
                                 <label class="block text-xs font-semibold text-slate-600 mb-1">Encomendista</label>
@@ -322,7 +324,6 @@
                             </div>
                         </div>
 
-                        <!-- Montos Financieros -->
                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 bg-slate-50 p-4 rounded-lg">
                             <div>
                                 <label class="block text-xs font-semibold text-slate-600 mb-1">Costo Prenda ($)</label>
@@ -346,12 +347,49 @@
                 </div>
             </section>
 
-            <!-- PESTAÑA 4: DINERO EN CALLE -->
+            <!-- PESTAÑA 4: PAQUETES EN ENCOMENDA (DINERO CONGELADO) -->
+            <section id="tab-congelados" class="space-y-6 hidden">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                    <div>
+                        <h2 class="text-xl md:text-2xl font-bold text-slate-900 flex items-center space-x-2">
+                            <i class="fa-solid fa-snowflake text-sky-500"></i>
+                            <span>4. En Encomienda (Congelados)</span>
+                        </h2>
+                        <p class="text-xs text-slate-500">Paquetes entregados al encomendista en tránsito hacia el cliente final.</p>
+                    </div>
+                    <div class="bg-sky-100 text-sky-900 px-4 py-2 rounded-lg text-xs md:text-sm font-bold">
+                        Dinero Congelado: <span id="total-dinero-congelado">$0.00</span>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-x-auto">
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-slate-50 border-b text-slate-600 uppercase text-xs">
+                            <tr>
+                                <th class="p-3 md:p-4">SKU</th>
+                                <th class="p-3 md:p-4">Fecha Enc.</th>
+                                <th class="p-3 md:p-4">Fecha Entrega</th>
+                                <th class="p-3 md:p-4">Cliente / Celular</th>
+                                <th class="p-3 md:p-4">Encomendista</th>
+                                <th class="p-3 md:p-4 text-right">Monto en Camino</th>
+                                <th class="p-3 md:p-4 text-center">Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla-congelados-body" class="divide-y divide-slate-100">
+                            <tr>
+                                <td colspan="7" class="p-4 text-center text-slate-400">Cargando paquetes en encomienda...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- PESTAÑA 5: DINERO EN CALLE (POR COBRAR) -->
             <section id="tab-por-cobrar" class="space-y-6 hidden">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
                     <div>
-                        <h2 class="text-xl md:text-2xl font-bold text-slate-900">4. Dinero en Calle (Por Cobrar)</h2>
-                        <p class="text-xs text-slate-500">Paquetes entregados hace <b>1 día o más</b> pendientes de liquidación.</p>
+                        <h2 class="text-xl md:text-2xl font-bold text-slate-900">5. Dinero en Calle (Por Cobrar)</h2>
+                        <p class="text-xs text-slate-500">Paquetes con fecha de entrega cumplida pendientes de liquidación.</p>
                     </div>
                     <div class="bg-amber-100 text-amber-900 px-4 py-2 rounded-lg text-xs md:text-sm font-bold">
                         Total por Retirar: <span id="total-dinero-calle">$0.00</span>
@@ -379,10 +417,10 @@
                 </div>
             </section>
 
-            <!-- PESTAÑA 5: HISTORIAL Y FILTROS -->
+            <!-- PESTAÑA 6: HISTORIAL Y FILTROS -->
             <section id="tab-historial" class="space-y-6 hidden">
                 <div>
-                    <h2 class="text-xl md:text-2xl font-bold text-slate-900">5. Historial</h2>
+                    <h2 class="text-xl md:text-2xl font-bold text-slate-900">6. Historial</h2>
                     <p class="text-xs text-slate-500">Filtra tus envíos guardados.</p>
                 </div>
 
@@ -556,7 +594,7 @@
     <!-- LÓGICA JAVASCRIPT CONECTADA A SHEETS -->
     <script>
         const proveedores = new Set(["PEDIDOS EXPRESS", "CASILLERO"]);
-        let ultimoNumeroSKU = 0; // Variable que se sincronizará con Google Sheets
+        let ultimoNumeroSKU = 0;
 
         function showTab(tabId) {
             document.querySelectorAll('main > section').forEach(sec => sec.classList.add('hidden'));
@@ -585,17 +623,13 @@
                 activeBtnMb.classList.remove('text-slate-400');
             }
 
-            // Si entra a "Ingresar Paquete", autocompleta el siguiente SKU
             if (tabId === 'tab-ingreso') {
                 obtenerSiguienteSKU();
             }
         }
 
-        // LÓGICA PARA SUGERIR AUTOMÁTICAMENTE EL SIGUIENTE SKU
         function obtenerSiguienteSKU() {
             document.getElementById('sku-preview').innerText = "Consultando Sheets...";
-            
-            // Aquí Google Apps Script devolverá el último correlativo. Ejemplo simulado:
             setTimeout(() => {
                 const siguienteNumero = ultimoNumeroSKU + 1;
                 const ceros = String(siguienteNumero).padStart(6, '0');
@@ -631,13 +665,13 @@
                 costoPrenda: parseFloat(document.getElementById('costo-prenda').value),
                 precioCobrar: parseFloat(document.getElementById('precio-cobrar').value),
                 costoEnvio: parseFloat(document.getElementById('costo-envio').value),
-                estado: 'En Tránsito'
+                estado: 'En Encomienda'
             };
 
             console.log("Enviando paquete a Sheets:", paqueteData);
             alert("¡Paquete " + skuFinal + " guardado con éxito en Sheets!");
             
-            ultimoNumeroSKU++; // Incrementar correlativo
+            ultimoNumeroSKU++;
             document.getElementById('form-registro-paquete').reset();
             obtenerSiguienteSKU();
         }
