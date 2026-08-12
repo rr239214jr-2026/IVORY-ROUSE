@@ -116,7 +116,7 @@
         <!-- CONTENIDO PRINCIPAL -->
         <main class="flex-1 p-4 md:p-8 overflow-y-auto">
 
-            <!-- PESTAÑA 1: ESTUDIO DE MERCADO -->
+            <!-- PESTAÑA 1: ESTUDIO DE MERCADO CON TOP 5 CLIENTES -->
             <section id="tab-mercado" class="space-y-6">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
                     <div>
@@ -135,12 +135,12 @@
                             <i class="fa-solid fa-map-location-dot text-indigo-500 text-lg"></i>
                         </div>
                         <p class="text-2xl font-extrabold text-slate-900" id="lbl-top-depto">Sin datos</p>
-                        <p class="text-xs text-indigo-600 font-semibold mt-1" id="lbl-top-depto-pct">0% de ventas</p>
+                        <p class="text-xs text-indigo-600 font-semibold mt-1" id="lbl-top-depto-pct">$0.00 facturados</p>
                     </div>
 
                     <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
                         <div class="flex items-center justify-between text-slate-500 mb-2">
-                            <span class="text-xs font-bold uppercase">Cliente VIP</span>
+                            <span class="text-xs font-bold uppercase">Cliente VIP #1</span>
                             <i class="fa-solid fa-crown text-amber-500 text-lg"></i>
                         </div>
                         <p class="text-2xl font-extrabold text-slate-900" id="lbl-top-cliente">Sin datos</p>
@@ -153,7 +153,7 @@
                             <i class="fa-solid fa-truck-fast text-emerald-500 text-lg"></i>
                         </div>
                         <p class="text-2xl font-extrabold text-slate-900" id="lbl-top-encomendista">Sin datos</p>
-                        <p class="text-xs text-emerald-600 font-semibold mt-1" id="lbl-top-encomendista-pct">0% entregas</p>
+                        <p class="text-xs text-emerald-600 font-semibold mt-1" id="lbl-top-encomendista-pct">0 paquetes</p>
                     </div>
                 </div>
 
@@ -168,19 +168,20 @@
                         </div>
                     </div>
 
+                    <!-- TABLA RANKING TOP 5 CLIENTES -->
                     <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 space-y-4">
                         <h3 class="font-bold text-slate-800 text-base flex items-center space-x-2">
                             <i class="fa-solid fa-trophy text-amber-500"></i>
-                            <span>Ranking Top Clientes (Mayor Facturación)</span>
+                            <span>Ranking Top 5 Clientes (Mayor Facturación)</span>
                         </h3>
                         <div class="overflow-x-auto">
                             <table class="w-full text-left text-xs">
                                 <thead class="bg-slate-50 border-b text-slate-500 uppercase">
                                     <tr>
-                                        <th class="p-2">#</th>
+                                        <th class="p-2 text-center">Top</th>
                                         <th class="p-2">Cliente</th>
                                         <th class="p-2">Depto</th>
-                                        <th class="p-2 text-right">Compras</th>
+                                        <th class="p-2 text-center">Compras</th>
                                         <th class="p-2 text-right">Total Acumulado</th>
                                     </tr>
                                 </thead>
@@ -195,7 +196,7 @@
                 </div>
             </section>
 
-            <!-- PESTAÑA 2: RESUMEN FINANCIERO (CON FILTRO MENSUAL POR DEFECTO) -->
+            <!-- PESTAÑA 2: RESUMEN FINANCIERO -->
             <section id="tab-resumen" class="space-y-6 hidden">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
                     <div>
@@ -203,7 +204,6 @@
                         <p class="text-xs text-slate-500">Corte de caja financiero por mes seleccionado.</p>
                     </div>
 
-                    <!-- FILTRO DE CORTE MENSUAL FINANCIERO -->
                     <div class="flex items-center space-x-2 bg-white p-2 rounded-xl shadow-sm border border-slate-200">
                         <i class="fa-solid fa-calendar-check text-indigo-600 text-sm ml-1"></i>
                         <select id="finanzas-filtro-mes" onchange="calcularKPIsFinanzas()" class="text-xs font-bold text-slate-700 bg-transparent outline-none cursor-pointer">
@@ -266,7 +266,7 @@
                 </div>
             </section>
 
-            <!-- PESTAÑA 3: INGRESO DE PAQUETE (SUBIDA DE FOTO A CARPETA IVORY FOTOS) -->
+            <!-- PESTAÑA 3: INGRESO DE PAQUETE -->
             <section id="tab-ingreso" class="hidden max-w-2xl mx-auto space-y-6">
                 <div>
                     <h2 class="text-xl md:text-2xl font-bold text-slate-900">3. Ingresar Nuevo Paquete</h2>
@@ -276,7 +276,6 @@
                 <div class="bg-white p-5 md:p-6 rounded-xl shadow-sm border border-slate-200">
                     <form id="form-registro-paquete" onsubmit="guardarPaquete(event)" class="space-y-4">
                         
-                        <!-- SKU AUTOMÁTICO -->
                         <div class="bg-indigo-50 p-4 rounded-lg border border-indigo-100 flex items-center justify-between">
                             <div>
                                 <label class="block text-xs font-bold text-indigo-900 uppercase">
@@ -290,7 +289,6 @@
                             <input type="hidden" id="sku-input-val">
                         </div>
 
-                        <!-- SUBIR FOTO DE REFERENCIA PRENDA -->
                         <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
                             <label class="block text-xs font-bold text-slate-700 mb-1">
                                 <i class="fa-solid fa-camera text-indigo-600 mr-1"></i> Foto de Prenda (Se guardará en carpeta IVORY FOTOS)
@@ -298,7 +296,6 @@
                             <input type="file" id="foto-input" accept="image/*" class="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
                         </div>
 
-                        <!-- ESTADO DE PAGO ANTICIPADO (TRANSFERENCIA) -->
                         <div class="bg-emerald-50 p-3 rounded-lg border border-emerald-200 flex items-center justify-between">
                             <div class="flex items-center space-x-2">
                                 <i class="fa-solid fa-money-bill-transfer text-emerald-600 text-lg"></i>
@@ -313,7 +310,6 @@
                             </label>
                         </div>
 
-                        <!-- Datos Cliente -->
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
                                 <label class="block text-xs font-semibold text-slate-600 mb-1">Nombre del Cliente</label>
@@ -325,7 +321,6 @@
                             </div>
                         </div>
 
-                        <!-- Ubicación -->
                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                             <div>
                                 <label class="block text-xs font-semibold text-slate-600 mb-1">Departamento (SV)</label>
@@ -358,7 +353,6 @@
                             <input type="text" id="articulo" required placeholder="Ej. Blusa Roja Talla M" class="w-full p-2.5 border rounded-lg text-sm outline-none focus:border-indigo-500">
                         </div>
 
-                        <!-- Encomendista y Fechas -->
                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                             <div>
                                 <label class="block text-xs font-semibold text-slate-600 mb-1">Encomendista</label>
@@ -378,7 +372,6 @@
                             </div>
                         </div>
 
-                        <!-- Montos Financieros -->
                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 bg-slate-50 p-4 rounded-lg">
                             <div>
                                 <label class="block text-xs font-semibold text-slate-600 mb-1">Costo Prenda ($)</label>
@@ -665,7 +658,7 @@
 
     <!-- SCRIPT PRINCIPAL -->
     <script>
-        const API_URL = "https://script.google.com/macros/s/AKfycbxYLZLsKrFuDsZ-iW7TYaC4HDu2rAvhefahRsqGjSU0DWufpdKZbeB1GqaG5O9wCoLi/exec";
+        const API_URL = "https://script.google.com/macros/s/AKfycbzd-bO9UVLDeL6_dV1Hc13EE61oFS1TfzDum1pmLL4qBVw9j_8tnm04crasmukkDFmi/exec";
         let globalPaquetes = [];
 
         window.addEventListener('DOMContentLoaded', () => {
@@ -1051,31 +1044,81 @@
             document.getElementById('total-dinero-calle').innerText = "$" + totalPorCobrar.toFixed(2);
         }
 
+        // LÓGICA DE MERCADO: TOP 5 CLIENTES Y DEPARTAMENTOS
         function renderizarEstudioMercado(paquetes) {
             const deptos = {};
             const clientes = {};
+            const encomendistas = {};
 
             paquetes.forEach(p => {
-                deptos[p.departamento] = (deptos[p.departamento] || 0) + parseFloat(p.precioCobrar || 0);
-                
-                if (!clientes[p.cliente]) {
-                    clientes[p.cliente] = { depto: p.departamento, compras: 0, total: 0 };
+                if (p.estado === "Cobrado" || p.estado === "En Encomienda" || p.estado === "Por Cobrar") {
+                    const depto = p.departamento || "Sin especificar";
+                    const cliente = p.cliente || "Anónimo";
+                    const encomendista = p.encomendista || "Sin Asignar";
+
+                    deptos[depto] = (deptos[depto] || 0) + parseFloat(p.precioCobrar || 0);
+                    encomendistas[encomendista] = (encomendistas[encomendista] || 0) + 1;
+
+                    if (!clientes[cliente]) {
+                        clientes[cliente] = { depto: depto, compras: 0, total: 0 };
+                    }
+                    clientes[cliente].compras++;
+                    clientes[cliente].total += parseFloat(p.precioCobrar || 0);
                 }
-                clientes[p.cliente].compras++;
-                clientes[p.cliente].total += parseFloat(p.precioCobrar || 0);
             });
 
+            // Card Depto Top #1
             const sortedDeptos = Object.entries(deptos).sort((a,b) => b[1] - a[1]);
             if (sortedDeptos.length > 0) {
                 document.getElementById('lbl-top-depto').innerText = sortedDeptos[0][0];
                 document.getElementById('lbl-top-depto-pct').innerText = "$" + sortedDeptos[0][1].toFixed(2) + " facturados";
             }
 
-            const sortedClientes = Object.entries(clientes).sort((a,b) => b[1].total - a[1].total);
-            if (sortedClientes.length > 0) {
-                document.getElementById('lbl-top-cliente').innerText = sortedClientes[0][0];
-                document.getElementById('lbl-top-cliente-monto').innerText = "$" + sortedClientes[0][1].total.toFixed(2) + " (" + sortedClientes[0][1].compras + " compras)";
+            // Card Encomendista Líder
+            const sortedEnc = Object.entries(encomendistas).sort((a,b) => b[1] - a[1]);
+            if (sortedEnc.length > 0) {
+                document.getElementById('lbl-top-encomendista').innerText = sortedEnc[0][0];
+                document.getElementById('lbl-top-encomendista-pct').innerText = sortedEnc[0][1] + " envíos procesados";
             }
+
+            // Renderizar Lista de Deptos Top
+            let htmlDeptos = "";
+            sortedDeptos.slice(0, 5).forEach(([deptoName, montoTotal]) => {
+                htmlDeptos += `
+                    <div class="flex items-center justify-between p-2.5 bg-slate-50 rounded-lg">
+                        <span class="font-bold text-xs text-slate-800"><i class="fa-solid fa-location-dot text-indigo-500 mr-1.5"></i>${deptoName}</span>
+                        <span class="font-extrabold text-xs text-indigo-600">$${montoTotal.toFixed(2)}</span>
+                    </div>`;
+            });
+            document.getElementById('lista-top-deptos').innerHTML = htmlDeptos || '<p class="text-xs text-slate-400 text-center py-4">Sin datos de venta aún.</p>';
+
+            // Renderizar Tabla Top 5 Clientes
+            const sortedClientes = Object.entries(clientes).sort((a,b) => b[1].total - a[1].total);
+            const top5Clientes = sortedClientes.slice(0, 5);
+
+            if (top5Clientes.length > 0) {
+                document.getElementById('lbl-top-cliente').innerText = top5Clientes[0][0];
+                document.getElementById('lbl-top-cliente-monto').innerText = "$" + top5Clientes[0][1].total.toFixed(2) + " (" + top5Clientes[0][1].compras + " compras)";
+            }
+
+            let htmlTop5 = "";
+            top5Clientes.forEach(([nombreCliente, info], index) => {
+                let medallaIcon = `<span class="font-bold text-slate-500">#${index + 1}</span>`;
+                if (index === 0) medallaIcon = `<i class="fa-solid fa-crown text-amber-500 text-base" title="Top 1 VIP"></i>`;
+                if (index === 1) medallaIcon = `<i class="fa-solid fa-medal text-slate-400 text-base" title="Top 2"></i>`;
+                if (index === 2) medallaIcon = `<i class="fa-solid fa-award text-amber-700 text-base" title="Top 3"></i>`;
+
+                htmlTop5 += `
+                    <tr class="hover:bg-slate-50">
+                        <td class="p-2 text-center">${medallaIcon}</td>
+                        <td class="p-2 font-bold text-slate-900">${nombreCliente}</td>
+                        <td class="p-2 text-slate-600">${info.depto}</td>
+                        <td class="p-2 text-center font-bold text-indigo-600">${info.compras}</td>
+                        <td class="p-2 text-right font-extrabold text-emerald-600">$${info.total.toFixed(2)}</td>
+                    </tr>`;
+            });
+
+            document.getElementById('tabla-top-clientes-body').innerHTML = htmlTop5 || '<tr><td colspan="5" class="p-4 text-center text-slate-400">Sin compras registradas aún.</td></tr>';
         }
 
         // PROMPT DE INSTALACIÓN PWA
