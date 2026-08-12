@@ -195,11 +195,36 @@
                 </div>
             </section>
 
-            <!-- PESTAÑA 2: RESUMEN FINANCIERO -->
+            <!-- PESTAÑA 2: RESUMEN FINANCIERO (CON FILTRO MENSUAL POR DEFECTO) -->
             <section id="tab-resumen" class="space-y-6 hidden">
-                <div class="flex justify-between items-center">
-                    <h2 class="text-xl md:text-2xl font-bold text-slate-900">2. Resumen Financiero</h2>
-                    <span class="text-xs font-semibold bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full">Ivorry Rouse.sv</span>
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                    <div>
+                        <h2 class="text-xl md:text-2xl font-bold text-slate-900">2. Resumen Financiero</h2>
+                        <p class="text-xs text-slate-500">Corte de caja financiero por mes seleccionado.</p>
+                    </div>
+
+                    <!-- FILTRO DE CORTE MENSUAL FINANCIERO -->
+                    <div class="flex items-center space-x-2 bg-white p-2 rounded-xl shadow-sm border border-slate-200">
+                        <i class="fa-solid fa-calendar-check text-indigo-600 text-sm ml-1"></i>
+                        <select id="finanzas-filtro-mes" onchange="calcularKPIsFinanzas()" class="text-xs font-bold text-slate-700 bg-transparent outline-none cursor-pointer">
+                            <option value="01">Enero</option>
+                            <option value="02">Febrero</option>
+                            <option value="03">Marzo</option>
+                            <option value="04">Abril</option>
+                            <option value="05">Mayo</option>
+                            <option value="06">Junio</option>
+                            <option value="07">Julio</option>
+                            <option value="08">Agosto</option>
+                            <option value="09">Septiembre</option>
+                            <option value="10">Octubre</option>
+                            <option value="11">Noviembre</option>
+                            <option value="12">Diciembre</option>
+                        </select>
+                        <select id="finanzas-filtro-anio" onchange="calcularKPIsFinanzas()" class="text-xs font-bold text-slate-700 bg-transparent outline-none cursor-pointer border-l pl-2">
+                            <option value="2026">2026</option>
+                            <option value="2025">2025</option>
+                        </select>
+                    </div>
                 </div>
                 
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -241,11 +266,11 @@
                 </div>
             </section>
 
-            <!-- PESTAÑA 3: INGRESO DE PAQUETE -->
+            <!-- PESTAÑA 3: INGRESO DE PAQUETE (SUBIDA DE FOTO A CARPETA IVORY FOTOS) -->
             <section id="tab-ingreso" class="hidden max-w-2xl mx-auto space-y-6">
                 <div>
                     <h2 class="text-xl md:text-2xl font-bold text-slate-900">3. Ingresar Nuevo Paquete</h2>
-                    <p class="text-xs md:text-sm text-slate-500">El número SKU se calculará automáticamente leyendo tu hoja de Sheets.</p>
+                    <p class="text-xs md:text-sm text-slate-500">El SKU se calcula automáticamente leyendo tu hoja de Sheets.</p>
                 </div>
 
                 <div class="bg-white p-5 md:p-6 rounded-xl shadow-sm border border-slate-200">
@@ -263,6 +288,14 @@
                                 <i class="fa-solid fa-rotate-right mr-1"></i> Actualizar
                             </button>
                             <input type="hidden" id="sku-input-val">
+                        </div>
+
+                        <!-- SUBIR FOTO DE REFERENCIA PRENDA -->
+                        <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
+                            <label class="block text-xs font-bold text-slate-700 mb-1">
+                                <i class="fa-solid fa-camera text-indigo-600 mr-1"></i> Foto de Prenda (Se guardará en carpeta IVORY FOTOS)
+                            </label>
+                            <input type="file" id="foto-input" accept="image/*" class="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
                         </div>
 
                         <!-- ESTADO DE PAGO ANTICIPADO (TRANSFERENCIA) -->
@@ -389,6 +422,7 @@
                         <thead class="bg-slate-50 border-b text-slate-600 uppercase text-xs">
                             <tr>
                                 <th class="p-3 md:p-4">SKU</th>
+                                <th class="p-3 md:p-4 text-center">Foto</th>
                                 <th class="p-3 md:p-4">Fecha Enc.</th>
                                 <th class="p-3 md:p-4">Fecha Entrega</th>
                                 <th class="p-3 md:p-4">Cliente / Celular</th>
@@ -399,7 +433,7 @@
                         </thead>
                         <tbody id="tabla-congelados-body" class="divide-y divide-slate-100">
                             <tr>
-                                <td colspan="7" class="p-4 text-center text-slate-400">Cargando paquetes en encomienda...</td>
+                                <td colspan="8" class="p-4 text-center text-slate-400">Cargando paquetes en encomienda...</td>
                             </tr>
                         </tbody>
                     </table>
@@ -423,6 +457,7 @@
                         <thead class="bg-slate-50 border-b text-slate-600 uppercase text-xs">
                             <tr>
                                 <th class="p-3 md:p-4">SKU</th>
+                                <th class="p-3 md:p-4 text-center">Foto</th>
                                 <th class="p-3 md:p-4">Cliente / Celular</th>
                                 <th class="p-3 md:p-4">Depto / Destino</th>
                                 <th class="p-3 md:p-4">Encomendista</th>
@@ -432,14 +467,14 @@
                         </thead>
                         <tbody id="tabla-cobros-body" class="divide-y divide-slate-100">
                             <tr>
-                                <td colspan="6" class="p-4 text-center text-slate-400">Cargando cobros pendientes...</td>
+                                <td colspan="7" class="p-4 text-center text-slate-400">Cargando cobros pendientes...</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </section>
 
-            <!-- PESTAÑA 6: HISTORIAL (SOLO PROCESOS FINALIZADOS: COBRADO O DEVUELTO) -->
+            <!-- PESTAÑA 6: HISTORIAL -->
             <section id="tab-historial" class="space-y-6 hidden">
                 <div>
                     <h2 class="text-xl md:text-2xl font-bold text-slate-900">6. Historial de Procesos Finalizados</h2>
@@ -488,6 +523,7 @@
                         <thead class="bg-slate-50 border-b text-slate-600 uppercase text-xs">
                             <tr>
                                 <th class="p-3 md:p-4">SKU</th>
+                                <th class="p-3 md:p-4 text-center">Foto</th>
                                 <th class="p-3 md:p-4">Fecha Enc.</th>
                                 <th class="p-3 md:p-4">Cliente</th>
                                 <th class="p-3 md:p-4">Depto / Destino</th>
@@ -500,7 +536,7 @@
                         </thead>
                         <tbody id="tabla-historial-body" class="divide-y divide-slate-100">
                             <tr>
-                                <td colspan="9" class="p-4 text-center text-slate-400">Cargando historial de procesos finalizados...</td>
+                                <td colspan="10" class="p-4 text-center text-slate-400">Cargando historial de procesos finalizados...</td>
                             </tr>
                         </tbody>
                     </table>
@@ -508,6 +544,21 @@
             </section>
 
         </main>
+    </div>
+
+    <!-- MODAL VISTA PREVIA FOTO PRENDA -->
+    <div id="modal-foto" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-white rounded-2xl max-w-sm w-full p-4 shadow-2xl space-y-3 relative">
+            <div class="flex justify-between items-center border-b pb-2">
+                <span class="font-bold text-slate-800 text-sm" id="modal-foto-title">Vista Previa Prenda</span>
+                <button onclick="cerrarModalFoto()" class="text-slate-400 hover:text-slate-600 p-1">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+            <div class="flex justify-center bg-slate-900 rounded-xl overflow-hidden min-h-[250px] items-center">
+                <img id="modal-foto-img" src="" alt="Foto Prenda" class="max-h-[70vh] object-contain">
+            </div>
+        </div>
     </div>
 
     <!-- MODAL DE EDICIÓN -->
@@ -612,15 +663,28 @@
         </div>
     </div>
 
-    <!-- CONEXIÓN REAL A LA WEB APP API DE GOOGLE APPS SCRIPT -->
+    <!-- SCRIPT PRINCIPAL -->
     <script>
         const API_URL = "https://script.google.com/macros/s/AKfycbxYLZLsKrFuDsZ-iW7TYaC4HDu2rAvhefahRsqGjSU0DWufpdKZbeB1GqaG5O9wCoLi/exec";
-        const proveedores = new Set(["PEDIDOS EXPRESS", "CASILLERO"]);
         let globalPaquetes = [];
 
         window.addEventListener('DOMContentLoaded', () => {
+            inicializarFiltrosPorDefecto();
             cargarDatosGenerales();
         });
+
+        function inicializarFiltrosPorDefecto() {
+            const hoy = new Date();
+            const mesActual = String(hoy.getMonth() + 1).padStart(2, '0');
+            const anioActual = String(hoy.getFullYear());
+
+            if (document.getElementById('finanzas-filtro-mes')) {
+                document.getElementById('finanzas-filtro-mes').value = mesActual;
+            }
+            if (document.getElementById('finanzas-filtro-anio')) {
+                document.getElementById('finanzas-filtro-anio').value = anioActual;
+            }
+        }
 
         function showTab(tabId) {
             document.querySelectorAll('main > section').forEach(sec => sec.classList.add('hidden'));
@@ -659,16 +723,45 @@
                 .then(res => res.json())
                 .then(data => {
                     globalPaquetes = data.paquetes || [];
-                    
-                    document.getElementById('lbl-ganancia-neta').innerText = "$" + (data.kpis.gananciaNeta || 0).toFixed(2);
-                    document.getElementById('lbl-ventas-totales').innerText = "$" + (data.kpis.ventasCobradas || 0).toFixed(2);
-                    document.getElementById('lbl-costo-prendas').innerText = "$" + (data.kpis.costoPrendas || 0).toFixed(2);
-                    document.getElementById('lbl-gasto-envios').innerText = "$" + (data.kpis.perdidasDevolucion || 0).toFixed(2);
-
+                    calcularKPIsFinanzas();
                     renderizarEstudioMercado(globalPaquetes);
                     renderizarTablas(globalPaquetes);
                 })
                 .catch(err => console.error("Error al conectar con Sheets:", err));
+        }
+
+        function calcularKPIsFinanzas() {
+            const fMes = document.getElementById('finanzas-filtro-mes').value;
+            const fAnio = document.getElementById('finanzas-filtro-anio').value;
+
+            let gananciaNetaTotal = 0;
+            let ventasCobradasTotal = 0;
+            let costoPrendasTotal = 0;
+            let perdidasDevolucionTotal = 0;
+
+            globalPaquetes.forEach(p => {
+                if (!p.fechaRegistro) return;
+                const partes = p.fechaRegistro.split('-');
+                if (partes.length < 2) return;
+
+                const anioPkg = partes[0];
+                const mesPkg = partes[1];
+
+                if (anioPkg === fAnio && mesPkg === fMes) {
+                    if (p.estado === "Cobrado") {
+                        ventasCobradasTotal += parseFloat(p.precioCobrar || 0);
+                        costoPrendasTotal += parseFloat(p.costoPrenda || 0);
+                        gananciaNetaTotal += parseFloat(p.gananciaNeta || 0);
+                    } else if (p.estado === "Devuelto") {
+                        perdidasDevolucionTotal += parseFloat(p.costoEnvio || 0);
+                    }
+                }
+            });
+
+            document.getElementById('lbl-ganancia-neta').innerText = "$" + gananciaNetaTotal.toFixed(2);
+            document.getElementById('lbl-ventas-totales').innerText = "$" + ventasCobradasTotal.toFixed(2);
+            document.getElementById('lbl-costo-prendas').innerText = "$" + costoPrendasTotal.toFixed(2);
+            document.getElementById('lbl-gasto-envios').innerText = "$" + perdidasDevolucionTotal.toFixed(2);
         }
 
         function obtenerSiguienteSKU() {
@@ -681,13 +774,19 @@
                 });
         }
 
-        function guardarPaquete(event) {
+        async function guardarPaquete(event) {
             event.preventDefault();
             const btn = document.getElementById('btn-guardar-pkg');
             btn.disabled = true;
-            btn.innerText = "Guardando en Google Sheets...";
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i>Guardando foto y datos en Sheets...';
 
             const esPagoAnticipado = document.getElementById('pago-anticipado').checked;
+            const fotoFile = document.getElementById('foto-input').files[0];
+            let fotoBase64 = "";
+
+            if (fotoFile) {
+                fotoBase64 = await convertirImagenABase64(fotoFile);
+            }
 
             const payload = {
                 accion: "registrarPaquete",
@@ -703,7 +802,8 @@
                 costoPrenda: parseFloat(document.getElementById('costo-prenda').value),
                 precioCobrar: parseFloat(document.getElementById('precio-cobrar').value),
                 costoEnvio: parseFloat(document.getElementById('costo-envio').value),
-                estadoInicial: esPagoAnticipado ? "Cobrado" : "En Encomienda"
+                estadoInicial: esPagoAnticipado ? "Cobrado" : "En Encomienda",
+                fotoBase64: fotoBase64
             };
 
             fetch(API_URL, {
@@ -719,6 +819,46 @@
                 cargarDatosGenerales();
                 obtenerSiguienteSKU();
             });
+        }
+
+        function convertirImagenABase64(file) {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        let width = img.width;
+                        let height = img.height;
+                        const maxDim = 800;
+                        if (width > height && width > maxDim) {
+                            height *= maxDim / width;
+                            width = maxDim;
+                        } else if (height > maxDim) {
+                            width *= maxDim / height;
+                            height = maxDim;
+                        }
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+                        resolve(canvas.toDataURL('image/jpeg', 0.7));
+                    };
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function abrirModalFoto(sku, url) {
+            document.getElementById('modal-foto-title').innerText = "Foto de Prenda: " + sku;
+            document.getElementById('modal-foto-img').src = url;
+            document.getElementById('modal-foto').classList.remove('hidden');
+        }
+
+        function cerrarModalFoto() {
+            document.getElementById('modal-foto').classList.add('hidden');
+            document.getElementById('modal-foto-img').src = "";
         }
 
         function marcarEstado(sku, nuevoEstado) {
@@ -815,26 +955,24 @@
             let totalCongelado = 0;
             let totalPorCobrar = 0;
 
-            // Obtener valores de los filtros del historial
             const fMes = document.getElementById('filtro-mes') ? document.getElementById('filtro-mes').value : "";
             const fAnio = document.getElementById('filtro-anio') ? document.getElementById('filtro-anio').value : "";
             const fEstado = document.getElementById('filtro-estado') ? document.getElementById('filtro-estado').value : "";
 
             paquetes.forEach(p => {
-                // FILTRADO DE HISTORIAL: SOLO PROCESOS FINALIZADOS ("Cobrado" o "Devuelto")
+                const btnFoto = p.fotoUrl 
+                    ? `<button onclick="abrirModalFoto('${p.sku}', '${p.fotoUrl}')" class="text-indigo-600 hover:text-indigo-800 p-1 font-bold text-xs" title="Ver Foto Prenda"><i class="fa-solid fa-image text-base"></i></button>`
+                    : `<span class="text-slate-300 text-xs"><i class="fa-solid fa-image-slash"></i></span>`;
+
                 if (p.estado === "Cobrado" || p.estado === "Devuelto") {
                     let cumple = true;
-
                     if (fEstado && p.estado !== fEstado) cumple = false;
 
                     if (p.fechaEncomendista) {
                         const partesFecha = p.fechaEncomendista.split("-");
                         if (partesFecha.length === 3) {
-                            const anioPkg = partesFecha[0];
-                            const mesPkg = partesFecha[1];
-
-                            if (fAnio && anioPkg !== fAnio) cumple = false;
-                            if (fMes && mesPkg !== fMes) cumple = false;
+                            if (fAnio && partesFecha[0] !== fAnio) cumple = false;
+                            if (fMes && partesFecha[1] !== fMes) cumple = false;
                         }
                     }
 
@@ -842,6 +980,7 @@
                         htmlHistorial += `
                             <tr>
                                 <td class="p-3 font-bold font-mono text-indigo-600">${p.sku}</td>
+                                <td class="p-3 text-center">${btnFoto}</td>
                                 <td class="p-3 text-xs">${p.fechaEncomendista}</td>
                                 <td class="p-3 font-medium">${p.cliente}</td>
                                 <td class="p-3 text-xs">${p.departamento} / ${p.destino}</td>
@@ -858,19 +997,19 @@
                     }
                 }
 
-                // Pestaña 4: En Encomienda
                 if (p.estado === "En Encomienda") {
                     totalCongelado += parseFloat(p.precioCobrar || 0);
                     htmlCongelados += `
                         <tr>
                             <td class="p-3 font-bold font-mono text-indigo-600">${p.sku}</td>
+                            <td class="p-3 text-center">${btnFoto}</td>
                             <td class="p-3 text-xs">${p.fechaEncomendista}</td>
                             <td class="p-3 text-xs">${p.fechaEntrega}</td>
                             <td class="p-3 font-medium">${p.cliente} (${p.celular})</td>
                             <td class="p-3 font-semibold text-xs">${p.encomendista}</td>
                             <td class="p-3 text-right font-bold text-sky-600">$${parseFloat(p.precioCobrar).toFixed(2)}</td>
                             <td class="p-3 text-center">
-                                <button onclick="marcarEstado('${p.sku}', 'Cobrado')" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs px-2.5 py-1 rounded-lg font-bold flex items-center space-x-1 mx-auto shadow transition active:scale-95" title="Pagado por transferencia anticipada">
+                                <button onclick="marcarEstado('${p.sku}', 'Cobrado')" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs px-2.5 py-1 rounded-lg font-bold flex items-center space-x-1 mx-auto shadow transition active:scale-95">
                                     <i class="fa-solid fa-money-bill-transfer"></i>
                                     <span>Cobrado Transferencia</span>
                                 </button>
@@ -878,12 +1017,12 @@
                         </tr>`;
                 }
 
-                // Pestaña 5: Por Cobrar
                 if (p.estado === "Por Cobrar") {
                     totalPorCobrar += parseFloat(p.precioCobrar || 0);
                     htmlPorCobrar += `
                         <tr>
                             <td class="p-3 font-bold font-mono text-indigo-600">${p.sku}</td>
+                            <td class="p-3 text-center">${btnFoto}</td>
                             <td class="p-3">
                                 <div class="font-medium">${p.cliente}</div>
                                 <a href="https://wa.me/503${p.celular}" target="_blank" class="text-xs text-emerald-600 hover:underline flex items-center space-x-1">
@@ -904,9 +1043,9 @@
                 }
             });
 
-            document.getElementById('tabla-congelados-body').innerHTML = htmlCongelados || '<tr><td colspan="7" class="p-4 text-center text-slate-400">No hay paquetes congelados.</td></tr>';
-            document.getElementById('tabla-cobros-body').innerHTML = htmlPorCobrar || '<tr><td colspan="6" class="p-4 text-center text-slate-400">No hay cobros pendientes.</td></tr>';
-            document.getElementById('tabla-historial-body').innerHTML = htmlHistorial || '<tr><td colspan="9" class="p-4 text-center text-slate-400">No hay registros finalizados con los filtros seleccionados.</td></tr>';
+            document.getElementById('tabla-congelados-body').innerHTML = htmlCongelados || '<tr><td colspan="8" class="p-4 text-center text-slate-400">No hay paquetes congelados.</td></tr>';
+            document.getElementById('tabla-cobros-body').innerHTML = htmlPorCobrar || '<tr><td colspan="7" class="p-4 text-center text-slate-400">No hay cobros pendientes.</td></tr>';
+            document.getElementById('tabla-historial-body').innerHTML = htmlHistorial || '<tr><td colspan="10" class="p-4 text-center text-slate-400">No hay registros finalizados con los filtros seleccionados.</td></tr>';
 
             document.getElementById('total-dinero-congelado').innerText = "$" + totalCongelado.toFixed(2);
             document.getElementById('total-dinero-calle').innerText = "$" + totalPorCobrar.toFixed(2);
