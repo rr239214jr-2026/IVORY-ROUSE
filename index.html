@@ -540,7 +540,7 @@
 
     <!-- MODAL / GALERÍA VISTA PREVIA FOTO PRENDA -->
     <div id="modal-foto" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
-        <div class="bg-white rounded-2xl max-w-sm w-full p-5 shadow-2xl space-y-4 relative animate-fade-in">
+        <div class="bg-white rounded-2xl max-w-sm w-full p-5 shadow-2xl space-y-4 relative">
             <div class="flex justify-between items-center border-b pb-3">
                 <div>
                     <h3 class="font-bold text-slate-900 text-base" id="modal-foto-title">SKU-000000</h3>
@@ -677,6 +677,12 @@
             cargarDatosGenerales();
         });
 
+        // HELPER PARA OBTENER SOLO LA FECHA AAAA-MM-DD
+        function formatearSoloFecha(fechaStr) {
+            if (!fechaStr) return "";
+            return String(fechaStr).split('T')[0];
+        }
+
         function inicializarFiltrosPorDefecto() {
             const hoy = new Date();
             const mesActual = String(hoy.getMonth() + 1).padStart(2, '0');
@@ -744,8 +750,10 @@
             let perdidasDevolucionTotal = 0;
 
             globalPaquetes.forEach(p => {
-                if (!p.fechaRegistro) return;
-                const partes = p.fechaRegistro.split('-');
+                const fechaLimpia = formatearSoloFecha(p.fechaRegistro);
+                if (!fechaLimpia) return;
+
+                const partes = fechaLimpia.split('-');
                 if (partes.length < 2) return;
 
                 const anioPkg = partes[0];
@@ -854,7 +862,6 @@
             });
         }
 
-        <!-- APERTURA DE LA GALERÍA / VISTA PREVIA -->
         function abrirModalFoto(sku) {
             const pkg = globalPaquetes.find(p => p.sku === sku);
             if (!pkg || !pkg.fotoUrl) return;
@@ -902,8 +909,8 @@
             document.getElementById('edit-destino').value = pkg.destino;
             document.getElementById('edit-articulo').value = pkg.articulo;
             document.getElementById('edit-encomendista').value = pkg.encomendista;
-            document.getElementById('edit-fecha-enc').value = pkg.fechaEncomendista;
-            document.getElementById('edit-fecha-entrega').value = pkg.fechaEntrega;
+            document.getElementById('edit-fecha-enc').value = formatearSoloFecha(pkg.fechaEncomendista);
+            document.getElementById('edit-fecha-entrega').value = formatearSoloFecha(pkg.fechaEntrega);
             document.getElementById('edit-costo-prenda').value = pkg.costoPrenda;
             document.getElementById('edit-precio-cobrar').value = pkg.precioCobrar;
             document.getElementById('edit-costo-envio').value = pkg.costoEnvio;
@@ -972,7 +979,11 @@
             const fEstado = document.getElementById('filtro-estado') ? document.getElementById('filtro-estado').value : "";
 
             paquetes.forEach(p => {
-                // Generar Botón de Galería / Vista Previa Foto Prenda
+                // Formatear/Limpiar fechas quitando horas T06:00:00...
+                const fechaEncLimpia = formatearSoloFecha(p.fechaEncomendista);
+                const fechaEntregaLimpia = formatearSoloFecha(p.fechaEntrega);
+
+                // Botón de Galería / Vista Previa Foto Prenda
                 const btnFoto = p.fotoUrl 
                     ? `<button onclick="abrirModalFoto('${p.sku}')" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-600 px-2.5 py-1 rounded-lg font-bold text-xs flex items-center justify-center space-x-1 mx-auto shadow-sm border border-indigo-200 transition active:scale-95">
                         <i class="fa-solid fa-camera"></i>
@@ -985,8 +996,8 @@
                     let cumple = true;
                     if (fEstado && p.estado !== fEstado) cumple = false;
 
-                    if (p.fechaEncomendista) {
-                        const partesFecha = p.fechaEncomendista.split("-");
+                    if (fechaEncLimpia) {
+                        const partesFecha = fechaEncLimpia.split("-");
                         if (partesFecha.length === 3) {
                             if (fAnio && partesFecha[0] !== fAnio) cumple = false;
                             if (fMes && partesFecha[1] !== fMes) cumple = false;
@@ -998,7 +1009,7 @@
                             <tr>
                                 <td class="p-3 font-bold font-mono text-indigo-600">${p.sku}</td>
                                 <td class="p-3 text-center">${btnFoto}</td>
-                                <td class="p-3 text-xs">${p.fechaEncomendista}</td>
+                                <td class="p-3 text-xs">${fechaEncLimpia}</td>
                                 <td class="p-3 font-medium">${p.cliente}</td>
                                 <td class="p-3 text-xs">${p.departamento} / ${p.destino}</td>
                                 <td class="p-3 text-xs font-semibold">${p.encomendista}</td>
@@ -1021,8 +1032,8 @@
                         <tr>
                             <td class="p-3 font-bold font-mono text-indigo-600">${p.sku}</td>
                             <td class="p-3 text-center">${btnFoto}</td>
-                            <td class="p-3 text-xs">${p.fechaEncomendista}</td>
-                            <td class="p-3 text-xs">${p.fechaEntrega}</td>
+                            <td class="p-3 text-xs">${fechaEncLimpia}</td>
+                            <td class="p-3 text-xs">${fechaEntregaLimpia}</td>
                             <td class="p-3 font-medium">${p.cliente} (${p.celular})</td>
                             <td class="p-3 font-semibold text-xs">${p.encomendista}</td>
                             <td class="p-3 text-right font-bold text-sky-600">$${parseFloat(p.precioCobrar).toFixed(2)}</td>
