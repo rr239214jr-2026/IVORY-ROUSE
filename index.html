@@ -5,605 +5,544 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Ivorry Rouse.sv - Control de Envíos</title>
     
-    <!-- CONFIGURACIÓN PWA PARA ANDROID -->
-    <meta name="theme-color" content="#0f172a">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="IvorryRouse">
-    
-    <link rel="manifest" href='data:application/manifest+json,{
-      "name": "Ivorry Rouse.sv - Control de Envíos",
-      "short_name": "IvorryRouse",
-      "start_url": "./index.html",
-      "display": "standalone",
-      "background_color": "#0f172a",
-      "theme_color": "#0f172a",
-      "orientation": "portrait",
-      "icons": [
-        {
-          "src": "https://cdn-icons-png.flaticon.com/512/689/689307.png",
-          "sizes": "512x512",
-          "type": "image/png"
-        }
-      ]
-    }'>
-
     <!-- CDN Tailwind CSS & FontAwesome -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="bg-slate-100 font-sans text-slate-800 select-none pb-20 md:pb-0">
+<body class="bg-slate-100 font-sans text-slate-800 select-none pb-20 md:pb-6">
 
-    <div class="flex flex-col md:flex-row min-h-screen">
-
-        <!-- MARCO LATERAL / MENÚ SUPERIOR (DESKTOP) -->
-        <aside class="w-full md:w-64 bg-slate-900 text-white p-4 flex flex-col justify-between shadow-lg">
-            <div class="flex items-center justify-between md:justify-start space-x-3 mb-2 md:mb-8 px-2">
-                <div class="flex items-center space-x-3">
-                    <i class="fa-solid fa-gem text-pink-400 text-2xl"></i>
-                    <div>
-                        <h1 class="font-bold text-lg leading-tight tracking-wide">Ivorry Rouse.sv</h1>
-                        <span class="text-xs text-slate-400">Control & Analytics 2026</span>
-                    </div>
+    <!-- CABECERA PRINCIPAL WEB -->
+    <header class="bg-slate-900 text-white p-4 sticky top-0 z-40 shadow-md">
+        <div class="max-w-5xl mx-auto flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <i class="fa-solid fa-gem text-pink-400 text-2xl"></i>
+                <div>
+                    <h1 class="font-bold text-base leading-tight tracking-wide">Ivorry Rouse.sv</h1>
+                    <span class="text-[10px] text-slate-400">Control & Analytics 2026</span>
                 </div>
-                <button id="btn-instalar" class="hidden bg-indigo-600 hover:bg-indigo-500 text-white text-xs px-3 py-1.5 rounded-full font-bold transition">
-                    <i class="fa-solid fa-download mr-1"></i> Instalar
-                </button>
             </div>
+            <button onclick="cargarDatosGenerales()" class="text-xs font-semibold bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1.5 rounded-lg transition flex items-center space-x-1 shadow">
+                <i class="fa-solid fa-rotate-right"></i>
+                <span class="hidden sm:inline">Sincronizar</span>
+            </button>
+        </div>
+    </header>
 
-            <!-- Navegación Escritorio (6 Pestañas) -->
-            <nav class="hidden md:block space-y-1.5">
-                <button onclick="showTab('tab-mercado')" id="btn-tab-mercado-dt" class="nav-btn w-full flex items-center space-x-3 px-4 py-2.5 rounded-lg bg-indigo-600 text-white text-left transition font-medium shadow text-sm">
-                    <i class="fa-solid fa-chart-pie text-indigo-200 w-5"></i>
-                    <span>1. Mercado</span>
-                </button>
-                <button onclick="showTab('tab-resumen')" id="btn-tab-resumen-dt" class="nav-btn w-full flex items-center space-x-3 px-4 py-2.5 rounded-lg hover:bg-slate-800 text-slate-300 text-left transition font-medium text-sm">
-                    <i class="fa-solid fa-chart-line text-indigo-400 w-5"></i>
-                    <span>2. Finanzas</span>
-                </button>
-                <button onclick="showTab('tab-ingreso')" id="btn-tab-ingreso-dt" class="nav-btn w-full flex items-center space-x-3 px-4 py-2.5 rounded-lg hover:bg-slate-800 text-slate-300 text-left transition font-medium text-sm">
-                    <i class="fa-solid fa-box-archive text-indigo-400 w-5"></i>
-                    <span>3. Ingresar Paquete</span>
-                </button>
-                <button onclick="showTab('tab-congelados')" id="btn-tab-congelados-dt" class="nav-btn w-full flex items-center space-x-3 px-4 py-2.5 rounded-lg hover:bg-slate-800 text-slate-300 text-left transition font-medium text-sm">
-                    <i class="fa-solid fa-snowflake text-sky-400 w-5"></i>
-                    <span>4. En Encomienda</span>
-                </button>
-                <button onclick="showTab('tab-por-cobrar')" id="btn-tab-por-cobrar-dt" class="nav-btn w-full flex items-center space-x-3 px-4 py-2.5 rounded-lg hover:bg-slate-800 text-slate-300 text-left transition font-medium text-sm">
-                    <i class="fa-solid fa-hand-holding-dollar text-indigo-400 w-5"></i>
-                    <span>5. Dinero en Calle</span>
-                </button>
-                <button onclick="showTab('tab-historial')" id="btn-tab-historial-dt" class="nav-btn w-full flex items-center space-x-3 px-4 py-2.5 rounded-lg hover:bg-slate-800 text-slate-300 text-left transition font-medium text-sm">
-                    <i class="fa-solid fa-clock-rotate-left text-indigo-400 w-5"></i>
-                    <span>6. Historial</span>
-                </button>
-            </nav>
-
-            <div class="hidden md:block mt-8 pt-4 border-t border-slate-800 text-xs text-slate-500 text-center">
-                Ivorry Rouse.sv © 2026
-            </div>
-        </aside>
-
-        <!-- BARRA DE NAVEGACIÓN INFERIOR (MÓVIL ANDROID) -->
-        <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-slate-900 border-t border-slate-800 z-50 flex justify-around p-1.5 text-slate-400 text-[9px] font-medium">
-            <button onclick="showTab('tab-mercado')" id="btn-tab-mercado-mb" class="nav-btn-mb flex flex-col items-center py-1 text-indigo-400">
-                <i class="fa-solid fa-chart-pie text-sm mb-0.5"></i>
+    <!-- NAVEGACIÓN EN PESTAÑAS (OPTIMIZADA PARA MÓVIL) -->
+    <nav class="bg-slate-900 border-t border-slate-800 sticky top-[60px] z-30 shadow-md">
+        <div class="max-w-5xl mx-auto flex justify-between overflow-x-auto p-1.5 text-slate-400 text-[11px] font-medium scrollbar-none">
+            <button onclick="showTab('tab-mercado')" id="btn-tab-mercado" class="nav-btn flex-1 min-w-[70px] py-2 px-1 text-center rounded-lg text-indigo-400 bg-slate-800/60 font-bold transition">
+                <i class="fa-solid fa-chart-pie block text-sm mb-0.5 mx-auto"></i>
                 <span>Mercado</span>
             </button>
-            <button onclick="showTab('tab-resumen')" id="btn-tab-resumen-mb" class="nav-btn-mb flex flex-col items-center py-1">
-                <i class="fa-solid fa-chart-line text-sm mb-0.5"></i>
+            <button onclick="showTab('tab-resumen')" id="btn-tab-resumen" class="nav-btn flex-1 min-w-[70px] py-2 px-1 text-center rounded-lg transition">
+                <i class="fa-solid fa-chart-line block text-sm mb-0.5 mx-auto"></i>
                 <span>Finanzas</span>
             </button>
-            <button onclick="showTab('tab-ingreso')" id="btn-tab-ingreso-mb" class="nav-btn-mb flex flex-col items-center py-1">
-                <i class="fa-solid fa-box-archive text-sm mb-0.5"></i>
+            <button onclick="showTab('tab-ingreso')" id="btn-tab-ingreso" class="nav-btn flex-1 min-w-[70px] py-2 px-1 text-center rounded-lg transition">
+                <i class="fa-solid fa-box-archive block text-sm mb-0.5 mx-auto"></i>
                 <span>Ingresar</span>
             </button>
-            <button onclick="showTab('tab-congelados')" id="btn-tab-congelados-mb" class="nav-btn-mb flex flex-col items-center py-1">
-                <i class="fa-solid fa-snowflake text-sm mb-0.5 text-sky-400"></i>
+            <button onclick="showTab('tab-congelados')" id="btn-tab-congelados" class="nav-btn flex-1 min-w-[70px] py-2 px-1 text-center rounded-lg transition">
+                <i class="fa-solid fa-snowflake block text-sm mb-0.5 mx-auto text-sky-400"></i>
                 <span>En Enc.</span>
             </button>
-            <button onclick="showTab('tab-por-cobrar')" id="btn-tab-por-cobrar-mb" class="nav-btn-mb flex flex-col items-center py-1">
-                <i class="fa-solid fa-hand-holding-dollar text-sm mb-0.5"></i>
+            <button onclick="showTab('tab-por-cobrar')" id="btn-tab-por-cobrar" class="nav-btn flex-1 min-w-[70px] py-2 px-1 text-center rounded-lg transition">
+                <i class="fa-solid fa-hand-holding-dollar block text-sm mb-0.5 mx-auto"></i>
                 <span>Por Cobrar</span>
             </button>
-            <button onclick="showTab('tab-historial')" id="btn-tab-historial-mb" class="nav-btn-mb flex flex-col items-center py-1">
-                <i class="fa-solid fa-clock-rotate-left text-sm mb-0.5"></i>
+            <button onclick="showTab('tab-historial')" id="btn-tab-historial" class="nav-btn flex-1 min-w-[70px] py-2 px-1 text-center rounded-lg transition">
+                <i class="fa-solid fa-clock-rotate-left block text-sm mb-0.5 mx-auto"></i>
                 <span>Historial</span>
             </button>
-        </nav>
+        </div>
+    </nav>
 
-        <!-- CONTENIDO PRINCIPAL -->
-        <main class="flex-1 p-4 md:p-8 overflow-y-auto">
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="max-w-5xl mx-auto p-4 space-y-6">
 
-            <!-- PESTAÑA 1: ESTUDIO DE MERCADO -->
-            <section id="tab-mercado" class="space-y-6">
-                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
-                    <div>
-                        <h2 class="text-xl md:text-2xl font-bold text-slate-900">1. Estudio de Mercado & Inteligencia</h2>
-                        <p class="text-xs text-slate-500">Métricas acumuladas desde la base de datos oficial en Google Sheets.</p>
+        <!-- PESTAÑA 1: ESTUDIO DE MERCADO -->
+        <section id="tab-mercado" class="space-y-4">
+            <div>
+                <h2 class="text-lg font-bold text-slate-900">1. Estudio de Mercado & Inteligencia</h2>
+                <p class="text-xs text-slate-500">Métricas acumuladas procesadas desde Google Sheets.</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+                    <div class="flex items-center justify-between text-slate-500 mb-1">
+                        <span class="text-[10px] font-bold uppercase">Depto Top #1</span>
+                        <i class="fa-solid fa-map-location-dot text-indigo-500"></i>
                     </div>
-                    <button onclick="cargarDatosGenerales()" class="text-xs font-semibold bg-indigo-100 hover:bg-indigo-200 text-indigo-800 px-3 py-1 rounded-full transition flex items-center space-x-1">
-                        <i class="fa-solid fa-rotate-right"></i> <span>Sincronizar Sheets</span>
-                    </button>
+                    <p class="text-xl font-extrabold text-slate-900" id="lbl-top-depto">Sin datos</p>
+                    <p class="text-xs text-indigo-600 font-semibold mt-0.5" id="lbl-top-depto-pct">$0.00 facturados</p>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
-                        <div class="flex items-center justify-between text-slate-500 mb-2">
-                            <span class="text-xs font-bold uppercase">Depto Top #1</span>
-                            <i class="fa-solid fa-map-location-dot text-indigo-500 text-lg"></i>
-                        </div>
-                        <p class="text-2xl font-extrabold text-slate-900" id="lbl-top-depto">Sin datos</p>
-                        <p class="text-xs text-indigo-600 font-semibold mt-1" id="lbl-top-depto-pct">$0.00 facturados</p>
+                <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+                    <div class="flex items-center justify-between text-slate-500 mb-1">
+                        <span class="text-[10px] font-bold uppercase">Cliente VIP #1</span>
+                        <i class="fa-solid fa-crown text-amber-500"></i>
                     </div>
+                    <p class="text-xl font-extrabold text-slate-900" id="lbl-top-cliente">Sin datos</p>
+                    <p class="text-xs text-amber-600 font-semibold mt-0.5" id="lbl-top-cliente-monto">$0.00 acumulados</p>
+                </div>
 
-                    <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
-                        <div class="flex items-center justify-between text-slate-500 mb-2">
-                            <span class="text-xs font-bold uppercase">Cliente VIP #1</span>
-                            <i class="fa-solid fa-crown text-amber-500 text-lg"></i>
-                        </div>
-                        <p class="text-2xl font-extrabold text-slate-900" id="lbl-top-cliente">Sin datos</p>
-                        <p class="text-xs text-amber-600 font-semibold mt-1" id="lbl-top-cliente-monto">$0.00 acumulados</p>
+                <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+                    <div class="flex items-center justify-between text-slate-500 mb-1">
+                        <span class="text-[10px] font-bold uppercase">Encomendista Líder</span>
+                        <i class="fa-solid fa-truck-fast text-emerald-500"></i>
                     </div>
+                    <p class="text-xl font-extrabold text-slate-900" id="lbl-top-encomendista">Sin datos</p>
+                    <p class="text-xs text-emerald-600 font-semibold mt-0.5" id="lbl-top-encomendista-pct">0 paquetes</p>
+                </div>
+            </div>
 
-                    <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
-                        <div class="flex items-center justify-between text-slate-500 mb-2">
-                            <span class="text-xs font-bold uppercase">Encomendista Líder</span>
-                            <i class="fa-solid fa-truck-fast text-emerald-500 text-lg"></i>
-                        </div>
-                        <p class="text-2xl font-extrabold text-slate-900" id="lbl-top-encomendista">Sin datos</p>
-                        <p class="text-xs text-emerald-600 font-semibold mt-1" id="lbl-top-encomendista-pct">0 paquetes</p>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 space-y-3">
+                    <h3 class="font-bold text-slate-800 text-sm flex items-center space-x-2">
+                        <i class="fa-solid fa-chart-column text-indigo-600"></i>
+                        <span>Ventas por Departamento (El Salvador)</span>
+                    </h3>
+                    <div id="lista-top-deptos" class="space-y-2">
+                        <p class="text-xs text-slate-400 py-3 text-center">Sin registros cargados aún en Sheets.</p>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 space-y-4">
-                        <h3 class="font-bold text-slate-800 text-base flex items-center space-x-2">
-                            <i class="fa-solid fa-chart-column text-indigo-600"></i>
-                            <span>Ventas por Departamento (El Salvador)</span>
-                        </h3>
-                        <div id="lista-top-deptos" class="space-y-3">
-                            <p class="text-xs text-slate-400 py-4 text-center">Sin registros cargados aún en Sheets.</p>
-                        </div>
-                    </div>
-
-                    <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 space-y-4">
-                        <h3 class="font-bold text-slate-800 text-base flex items-center space-x-2">
-                            <i class="fa-solid fa-trophy text-amber-500"></i>
-                            <span>Ranking Top 5 Clientes (Mayor Facturación)</span>
-                        </h3>
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-left text-xs">
-                                <thead class="bg-slate-50 border-b text-slate-500 uppercase">
-                                    <tr>
-                                        <th class="p-2 text-center">Top</th>
-                                        <th class="p-2">Cliente</th>
-                                        <th class="p-2">Depto</th>
-                                        <th class="p-2 text-center">Compras</th>
-                                        <th class="p-2 text-right">Total Acumulado</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="tabla-top-clientes-body" class="divide-y divide-slate-100">
-                                    <tr>
-                                        <td colspan="5" class="p-4 text-center text-slate-400">Sin compras registradas.</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 space-y-3">
+                    <h3 class="font-bold text-slate-800 text-sm flex items-center space-x-2">
+                        <i class="fa-solid fa-trophy text-amber-500"></i>
+                        <span>Ranking Top 5 Clientes (Mayor Facturación)</span>
+                    </h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs">
+                            <thead class="bg-slate-50 border-b text-slate-500 uppercase">
+                                <tr>
+                                    <th class="p-2 text-center">Top</th>
+                                    <th class="p-2">Cliente</th>
+                                    <th class="p-2">Depto</th>
+                                    <th class="p-2 text-center">Compras</th>
+                                    <th class="p-2 text-right">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabla-top-clientes-body" class="divide-y divide-slate-100">
+                                <tr>
+                                    <td colspan="5" class="p-3 text-center text-slate-400">Sin compras registradas.</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-            </section>
+            </div>
+        </section>
 
-            <!-- PESTAÑA 2: RESUMEN FINANCIERO -->
-            <section id="tab-resumen" class="space-y-6 hidden">
-                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
-                    <div>
-                        <h2 class="text-xl md:text-2xl font-bold text-slate-900">2. Resumen Financiero</h2>
-                        <p class="text-xs text-slate-500">Corte de caja financiero por mes seleccionado.</p>
-                    </div>
-
-                    <div class="flex items-center space-x-2 bg-white p-2 rounded-xl shadow-sm border border-slate-200">
-                        <i class="fa-solid fa-calendar-check text-indigo-600 text-sm ml-1"></i>
-                        <select id="finanzas-filtro-mes" onchange="calcularKPIsFinanzas()" class="text-xs font-bold text-slate-700 bg-transparent outline-none cursor-pointer">
-                            <option value="01">Enero</option>
-                            <option value="02">Febrero</option>
-                            <option value="03">Marzo</option>
-                            <option value="04">Abril</option>
-                            <option value="05">Mayo</option>
-                            <option value="06">Junio</option>
-                            <option value="07">Julio</option>
-                            <option value="08">Agosto</option>
-                            <option value="09">Septiembre</option>
-                            <option value="10">Octubre</option>
-                            <option value="11">Noviembre</option>
-                            <option value="12">Diciembre</option>
-                        </select>
-                        <select id="finanzas-filtro-anio" onchange="calcularKPIsFinanzas()" class="text-xs font-bold text-slate-700 bg-transparent outline-none cursor-pointer border-l pl-2">
-                            <option value="2026">2026</option>
-                            <option value="2025">2025</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
-                        <div class="flex items-center justify-between text-slate-500 mb-2">
-                            <span class="text-xs font-bold uppercase">Ganancia Neta</span>
-                            <i class="fa-solid fa-sack-dollar text-emerald-500"></i>
-                        </div>
-                        <p class="text-3xl font-extrabold text-emerald-600" id="lbl-ganancia-neta">$0.00</p>
-                        <p class="text-xs text-slate-400 mt-1">Ventas - Costos - Fletes</p>
-                    </div>
-
-                    <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
-                        <div class="flex items-center justify-between text-slate-500 mb-2">
-                            <span class="text-xs font-bold uppercase">Ventas Cobradas</span>
-                            <i class="fa-solid fa-cash-register text-indigo-500"></i>
-                        </div>
-                        <p class="text-3xl font-extrabold text-indigo-600" id="lbl-ventas-totales">$0.00</p>
-                        <p class="text-xs text-slate-400 mt-1">Total abonado por clientes</p>
-                    </div>
-
-                    <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
-                        <div class="flex items-center justify-between text-slate-500 mb-2">
-                            <span class="text-xs font-bold uppercase">Costo de Prendas</span>
-                            <i class="fa-solid fa-tag text-rose-500"></i>
-                        </div>
-                        <p class="text-3xl font-extrabold text-rose-600" id="lbl-costo-prendas">$0.00</p>
-                        <p class="text-xs text-slate-400 mt-1">Inversión base del producto</p>
-                    </div>
-
-                    <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
-                        <div class="flex items-center justify-between text-slate-500 mb-2">
-                            <span class="text-xs font-bold uppercase">Pérdida Devoluciones</span>
-                            <i class="fa-solid fa-triangle-exclamation text-amber-500"></i>
-                        </div>
-                        <p class="text-3xl font-extrabold text-amber-600" id="lbl-gasto-envios">$0.00</p>
-                        <p class="text-xs text-slate-400 mt-1">Fletes sin venta concretada</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- PESTAÑA 3: INGRESO DE PAQUETE -->
-            <section id="tab-ingreso" class="hidden max-w-2xl mx-auto space-y-6">
+        <!-- PESTAÑA 2: RESUMEN FINANCIERO -->
+        <section id="tab-resumen" class="space-y-4 hidden">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
                 <div>
-                    <h2 class="text-xl md:text-2xl font-bold text-slate-900">3. Ingresar Nuevo Paquete</h2>
-                    <p class="text-xs md:text-sm text-slate-500">El SKU se calcula automáticamente leyendo tu hoja de Sheets.</p>
+                    <h2 class="text-lg font-bold text-slate-900">2. Resumen Financiero</h2>
+                    <p class="text-xs text-slate-500">Corte de caja financiero por mes seleccionado.</p>
                 </div>
 
-                <div class="bg-white p-5 md:p-6 rounded-xl shadow-sm border border-slate-200">
-                    <form id="form-registro-paquete" onsubmit="guardarPaquete(event)" class="space-y-4">
-                        
-                        <div class="bg-indigo-50 p-4 rounded-lg border border-indigo-100 flex items-center justify-between">
-                            <div>
-                                <label class="block text-xs font-bold text-indigo-900 uppercase">
-                                    Código SKU Sugerido (Automático)
-                                </label>
-                                <span id="sku-preview" class="text-lg font-bold font-mono text-indigo-700">Calculando...</span>
-                            </div>
-                            <button type="button" onclick="obtenerSiguienteSKU()" class="text-xs bg-indigo-200 hover:bg-indigo-300 text-indigo-900 px-3 py-1.5 rounded-lg font-bold transition">
-                                <i class="fa-solid fa-rotate-right mr-1"></i> Actualizar
-                            </button>
-                            <input type="hidden" id="sku-input-val">
-                        </div>
+                <div class="flex items-center space-x-2 bg-white p-2 rounded-xl shadow-sm border border-slate-200 w-full sm:w-auto">
+                    <i class="fa-solid fa-calendar-check text-indigo-600 text-xs ml-1"></i>
+                    <select id="finanzas-filtro-mes" onchange="calcularKPIsFinanzas()" class="text-xs font-bold text-slate-700 bg-transparent outline-none cursor-pointer flex-1">
+                        <option value="01">Enero</option>
+                        <option value="02">Febrero</option>
+                        <option value="03">Marzo</option>
+                        <option value="04">Abril</option>
+                        <option value="05">Mayo</option>
+                        <option value="06">Junio</option>
+                        <option value="07">Julio</option>
+                        <option value="08">Agosto</option>
+                        <option value="09">Septiembre</option>
+                        <option value="10">Octubre</option>
+                        <option value="11">Noviembre</option>
+                        <option value="12">Diciembre</option>
+                    </select>
+                    <select id="finanzas-filtro-anio" onchange="calcularKPIsFinanzas()" class="text-xs font-bold text-slate-700 bg-transparent outline-none cursor-pointer border-l pl-2">
+                        <option value="2026">2026</option>
+                        <option value="2025">2025</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+                <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+                    <div class="flex items-center justify-between text-slate-500 mb-1">
+                        <span class="text-[10px] font-bold uppercase">Ganancia Neta</span>
+                        <i class="fa-solid fa-sack-dollar text-emerald-500"></i>
+                    </div>
+                    <p class="text-2xl font-extrabold text-emerald-600" id="lbl-ganancia-neta">$0.00</p>
+                    <p class="text-[10px] text-slate-400 mt-1">Ventas - Costos - Fletes</p>
+                </div>
 
-                        <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
-                            <label class="block text-xs font-bold text-slate-700 mb-1">
-                                <i class="fa-solid fa-camera text-indigo-600 mr-1"></i> Foto de Prenda (Se guardará en carpeta IVORY FOTOS)
-                            </label>
-                            <input type="file" id="foto-input" accept="image/*" class="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
-                        </div>
+                <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+                    <div class="flex items-center justify-between text-slate-500 mb-1">
+                        <span class="text-[10px] font-bold uppercase">Ventas Cobradas</span>
+                        <i class="fa-solid fa-cash-register text-indigo-500"></i>
+                    </div>
+                    <p class="text-2xl font-extrabold text-indigo-600" id="lbl-ventas-totales">$0.00</p>
+                    <p class="text-[10px] text-slate-400 mt-1">Total abonado clientes</p>
+                </div>
 
-                        <div class="bg-emerald-50 p-3 rounded-lg border border-emerald-200 flex items-center justify-between">
-                            <div class="flex items-center space-x-2">
-                                <i class="fa-solid fa-money-bill-transfer text-emerald-600 text-lg"></i>
-                                <div>
-                                    <p class="text-xs font-bold text-emerald-900">¿Pagado por Transferencia Antes de Enviar?</p>
-                                    <p class="text-[11px] text-emerald-700">Marca esta opción si el cliente ya te canceló la prenda.</p>
-                                </div>
-                            </div>
-                            <label class="relative inline-flex items-center cursor-pointer">
-                                <input type="checkbox" id="pago-anticipado" class="sr-only peer">
-                                <div class="w-11 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-600"></div>
-                            </label>
-                        </div>
+                <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+                    <div class="flex items-center justify-between text-slate-500 mb-1">
+                        <span class="text-[10px] font-bold uppercase">Costo Prendas</span>
+                        <i class="fa-solid fa-tag text-rose-500"></i>
+                    </div>
+                    <p class="text-2xl font-extrabold text-rose-600" id="lbl-costo-prendas">$0.00</p>
+                    <p class="text-[10px] text-slate-400 mt-1">Inversión base producto</p>
+                </div>
 
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-600 mb-1">Nombre del Cliente</label>
-                                <input type="text" id="cliente" required placeholder="Nombre completo" class="w-full p-2.5 border rounded-lg text-sm outline-none focus:border-indigo-500">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-600 mb-1">Número de Celular</label>
-                                <input type="tel" id="celular" required placeholder="Ej: 77778888" class="w-full p-2.5 border rounded-lg text-sm outline-none focus:border-indigo-500">
-                            </div>
-                        </div>
+                <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+                    <div class="flex items-center justify-between text-slate-500 mb-1">
+                        <span class="text-[10px] font-bold uppercase">Devoluciones</span>
+                        <i class="fa-solid fa-triangle-exclamation text-amber-500"></i>
+                    </div>
+                    <p class="text-2xl font-extrabold text-amber-600" id="lbl-gasto-envios">$0.00</p>
+                    <p class="text-[10px] text-slate-400 mt-1">Fletes sin concretar</p>
+                </div>
+            </div>
+        </section>
 
-                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-600 mb-1">Departamento (SV)</label>
-                                <select id="departamento" required class="w-full p-2.5 border rounded-lg text-sm outline-none focus:border-indigo-500">
-                                    <option value="">Selecciona...</option>
-                                    <option value="Ahuachapán">Ahuachapán</option>
-                                    <option value="Cabañas">Cabañas</option>
-                                    <option value="Chalatenango">Chalatenango</option>
-                                    <option value="Cuscatlán">Cuscatlán</option>
-                                    <option value="La Libertad">La Libertad</option>
-                                    <option value="La Paz">La Paz</option>
-                                    <option value="La Unión">La Unión</option>
-                                    <option value="Morazán">Morazán</option>
-                                    <option value="San Miguel">San Miguel</option>
-                                    <option value="San Salvador">San Salvador</option>
-                                    <option value="San Vicente">San Vicente</option>
-                                    <option value="Santa Ana">Santa Ana</option>
-                                    <option value="Sonsonate">Sonsonate</option>
-                                    <option value="Usulután">Usulután</option>
-                                </select>
-                            </div>
-                            <div class="sm:col-span-2">
-                                <label class="block text-xs font-semibold text-slate-600 mb-1">Municipio / Dirección Corta</label>
-                                <input type="text" id="destino" required placeholder="Ej. Soyapango / Plaza Soyapango" class="w-full p-2.5 border rounded-lg text-sm outline-none focus:border-indigo-500">
-                            </div>
-                        </div>
+        <!-- PESTAÑA 3: INGRESO DE PAQUETE -->
+        <section id="tab-ingreso" class="hidden max-w-xl mx-auto space-y-4">
+            <div>
+                <h2 class="text-lg font-bold text-slate-900">3. Ingresar Nuevo Paquete</h2>
+                <p class="text-xs text-slate-500">El SKU se calcula automáticamente conectando con Sheets.</p>
+            </div>
 
+            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+                <form id="form-registro-paquete" onsubmit="guardarPaquete(event)" class="space-y-3">
+                    
+                    <div class="bg-indigo-50 p-3 rounded-lg border border-indigo-100 flex items-center justify-between">
                         <div>
-                            <label class="block text-xs font-semibold text-slate-600 mb-1">Descripción / Prenda</label>
-                            <input type="text" id="articulo" required placeholder="Ej. Blusa Roja Talla M" class="w-full p-2.5 border rounded-lg text-sm outline-none focus:border-indigo-500">
+                            <label class="block text-[10px] font-bold text-indigo-900 uppercase">
+                                SKU Sugerido (Automático)
+                            </label>
+                            <span id="sku-preview" class="text-base font-bold font-mono text-indigo-700">Calculando...</span>
                         </div>
-
-                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-600 mb-1">Encomendista</label>
-                                <input type="text" id="encomendista" list="lista-encomendistas" required placeholder="Selecciona..." class="w-full p-2.5 border rounded-lg text-sm outline-none focus:border-indigo-500">
-                                <datalist id="lista-encomendistas">
-                                    <option value="PEDIDOS EXPRESS"></option>
-                                    <option value="CASILLERO"></option>
-                                </datalist>
-                            </div>
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-600 mb-1">Fecha Encomendista</label>
-                                <input type="date" id="fecha-encomendista" required class="w-full p-2.5 border rounded-lg text-sm outline-none focus:border-indigo-500">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-600 mb-1">Fecha Entrega Cliente</label>
-                                <input type="date" id="fecha-entrega" required class="w-full p-2.5 border rounded-lg text-sm outline-none focus:border-indigo-500">
-                            </div>
-                        </div>
-
-                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 bg-slate-50 p-4 rounded-lg">
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-600 mb-1">Costo Prenda ($)</label>
-                                <input type="number" step="0.01" id="costo-prenda" required placeholder="0.00" class="w-full p-2 border rounded-lg text-sm">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-600 mb-1">Precio Cobrar ($)</label>
-                                <input type="number" step="0.01" id="precio-cobrar" required placeholder="0.00" class="w-full p-2 border rounded-lg text-sm">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-600 mb-1">Costo Envío ($)</label>
-                                <input type="number" step="0.01" id="costo-envio" required placeholder="0.00" class="w-full p-2 border rounded-lg text-sm">
-                            </div>
-                        </div>
-
-                        <button type="submit" id="btn-guardar-pkg" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3.5 rounded-lg transition flex items-center justify-center space-x-2 shadow-lg active:scale-95">
-                            <i class="fa-solid fa-cloud-arrow-up"></i>
-                            <span>Registrar en Google Sheets</span>
+                        <button type="button" onclick="obtenerSiguienteSKU()" class="text-xs bg-indigo-200 hover:bg-indigo-300 text-indigo-900 px-2.5 py-1 rounded-lg font-bold transition">
+                            <i class="fa-solid fa-rotate-right mr-1"></i> Actualizar
                         </button>
-                    </form>
-                </div>
-            </section>
+                        <input type="hidden" id="sku-input-val">
+                    </div>
 
-            <!-- PESTAÑA 4: PAQUETES EN ENCOMENDA -->
-            <section id="tab-congelados" class="space-y-6 hidden">
-                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                    <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
+                        <label class="block text-xs font-bold text-slate-700 mb-1">
+                            <i class="fa-solid fa-camera text-indigo-600 mr-1"></i> Foto Prenda (Guardada en Drive IVORY FOTOS)
+                        </label>
+                        <input type="file" id="foto-input" accept="image/*" class="w-full text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700">
+                    </div>
+
+                    <div class="bg-emerald-50 p-3 rounded-lg border border-emerald-200 flex items-center justify-between">
+                        <div class="flex items-center space-x-2">
+                            <i class="fa-solid fa-money-bill-transfer text-emerald-600 text-base"></i>
+                            <div>
+                                <p class="text-xs font-bold text-emerald-900">¿Pagado por Transferencia?</p>
+                                <p class="text-[10px] text-emerald-700">Abona la prenda antes del envío.</p>
+                            </div>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" id="pago-anticipado" class="sr-only peer">
+                            <div class="w-10 h-5 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-600"></div>
+                        </label>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Nombre del Cliente</label>
+                            <input type="text" id="cliente" required placeholder="Nombre completo" class="w-full p-2 border rounded-lg text-xs outline-none focus:border-indigo-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Número de Celular</label>
+                            <input type="tel" id="celular" required placeholder="Ej: 77778888" class="w-full p-2 border rounded-lg text-xs outline-none focus:border-indigo-500">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Departamento (SV)</label>
+                            <select id="departamento" required class="w-full p-2 border rounded-lg text-xs outline-none focus:border-indigo-500 bg-white">
+                                <option value="">Selecciona...</option>
+                                <option value="Ahuachapán">Ahuachapán</option>
+                                <option value="Cabañas">Cabañas</option>
+                                <option value="Chalatenango">Chalatenango</option>
+                                <option value="Cuscatlán">Cuscatlán</option>
+                                <option value="La Libertad">La Libertad</option>
+                                <option value="La Paz">La Paz</option>
+                                <option value="La Unión">La Unión</option>
+                                <option value="Morazán">Morazán</option>
+                                <option value="San Miguel">San Miguel</option>
+                                <option value="San Salvador">San Salvador</option>
+                                <option value="San Vicente">San Vicente</option>
+                                <option value="Santa Ana">Santa Ana</option>
+                                <option value="Sonsonate">Sonsonate</option>
+                                <option value="Usulután">Usulután</option>
+                            </select>
+                        </div>
+                        <div class="sm:col-span-2">
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Municipio / Dirección Corta</label>
+                            <input type="text" id="destino" required placeholder="Ej. Soyapango / Plaza Soyapango" class="w-full p-2 border rounded-lg text-xs outline-none focus:border-indigo-500">
+                        </div>
+                    </div>
+
                     <div>
-                        <h2 class="text-xl md:text-2xl font-bold text-slate-900 flex items-center space-x-2">
-                            <i class="fa-solid fa-snowflake text-sky-500"></i>
-                            <span>4. En Encomienda (Congelados)</span>
-                        </h2>
-                        <p class="text-xs text-slate-500">Paquetes entregados al encomendista en tránsito hacia el cliente final.</p>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Descripción / Prenda</label>
+                        <input type="text" id="articulo" required placeholder="Ej. Blusa Roja Talla M" class="w-full p-2 border rounded-lg text-xs outline-none focus:border-indigo-500">
                     </div>
-                    <div class="bg-sky-100 text-sky-900 px-4 py-2 rounded-lg text-xs md:text-sm font-bold">
-                        Dinero Congelado: <span id="total-dinero-congelado">$0.00</span>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Encomendista</label>
+                            <input type="text" id="encomendista" list="lista-encomendistas" required placeholder="Selecciona..." class="w-full p-2 border rounded-lg text-xs outline-none focus:border-indigo-500">
+                            <datalist id="lista-encomendistas">
+                                <option value="PEDIDOS EXPRESS"></option>
+                                <option value="CASILLERO"></option>
+                            </datalist>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Fecha Encomendista</label>
+                            <input type="date" id="fecha-encomendista" required class="w-full p-2 border rounded-lg text-xs outline-none focus:border-indigo-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Fecha Entrega</label>
+                            <input type="date" id="fecha-entrega" required class="w-full p-2 border rounded-lg text-xs outline-none focus:border-indigo-500">
+                        </div>
                     </div>
-                </div>
 
-                <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-x-auto">
-                    <table class="w-full text-left text-sm">
-                        <thead class="bg-slate-50 border-b text-slate-600 uppercase text-xs">
-                            <tr>
-                                <th class="p-3 md:p-4">SKU</th>
-                                <th class="p-3 md:p-4 text-center">Foto Prenda</th>
-                                <th class="p-3 md:p-4">Fecha Enc.</th>
-                                <th class="p-3 md:p-4">Fecha Entrega</th>
-                                <th class="p-3 md:p-4">Cliente / Celular</th>
-                                <th class="p-3 md:p-4">Encomendista</th>
-                                <th class="p-3 md:p-4 text-right">Monto</th>
-                                <th class="p-3 md:p-4 text-center">Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tabla-congelados-body" class="divide-y divide-slate-100">
-                            <tr>
-                                <td colspan="8" class="p-4 text-center text-slate-400">Cargando paquetes en encomienda...</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-
-            <!-- PESTAÑA 5: DINERO EN CALLE -->
-            <section id="tab-por-cobrar" class="space-y-6 hidden">
-                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
-                    <div>
-                        <h2 class="text-xl md:text-2xl font-bold text-slate-900">5. Dinero en Calle (Por Cobrar)</h2>
-                        <p class="text-xs text-slate-500">Paquetes con fecha de entrega cumplida pendientes de liquidación.</p>
+                    <div class="grid grid-cols-3 gap-2 bg-slate-50 p-3 rounded-lg border">
+                        <div>
+                            <label class="block text-[10px] font-semibold text-slate-600 mb-1">Costo ($)</label>
+                            <input type="number" step="0.01" id="costo-prenda" required placeholder="0.00" class="w-full p-1.5 border rounded text-xs">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-semibold text-slate-600 mb-1">Cobro ($)</label>
+                            <input type="number" step="0.01" id="precio-cobrar" required placeholder="0.00" class="w-full p-1.5 border rounded text-xs">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-semibold text-slate-600 mb-1">Envío ($)</label>
+                            <input type="number" step="0.01" id="costo-envio" required placeholder="0.00" class="w-full p-1.5 border rounded text-xs">
+                        </div>
                     </div>
-                    <div class="bg-amber-100 text-amber-900 px-4 py-2 rounded-lg text-xs md:text-sm font-bold">
-                        Total por Retirar: <span id="total-dinero-calle">$0.00</span>
-                    </div>
-                </div>
 
-                <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-x-auto">
-                    <table class="w-full text-left text-sm">
-                        <thead class="bg-slate-50 border-b text-slate-600 uppercase text-xs">
-                            <tr>
-                                <th class="p-3 md:p-4">SKU</th>
-                                <th class="p-3 md:p-4 text-center">Foto Prenda</th>
-                                <th class="p-3 md:p-4">Cliente / Celular</th>
-                                <th class="p-3 md:p-4">Depto / Destino</th>
-                                <th class="p-3 md:p-4">Encomendista</th>
-                                <th class="p-3 md:p-4 text-right">Monto Cobro</th>
-                                <th class="p-3 md:p-4 text-center">Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tabla-cobros-body" class="divide-y divide-slate-100">
-                            <tr>
-                                <td colspan="7" class="p-4 text-center text-slate-400">Cargando cobros pendientes...</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
+                    <button type="submit" id="btn-guardar-pkg" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-lg transition flex items-center justify-center space-x-2 shadow active:scale-95 text-xs">
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                        <span>Registrar en Google Sheets</span>
+                    </button>
+                </form>
+            </div>
+        </section>
 
-            <!-- PESTAÑA 6: HISTORIAL -->
-            <section id="tab-historial" class="space-y-6 hidden">
+        <!-- PESTAÑA 4: PAQUETES EN ENCOMENDA -->
+        <section id="tab-congelados" class="space-y-4 hidden">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
                 <div>
-                    <h2 class="text-xl md:text-2xl font-bold text-slate-900">6. Historial de Procesos Finalizados</h2>
-                    <p class="text-xs text-slate-500">Registro histórico únicamente de paquetes con venta concretada o no retirados.</p>
+                    <h2 class="text-lg font-bold text-slate-900 flex items-center space-x-2">
+                        <i class="fa-solid fa-snowflake text-sky-500"></i>
+                        <span>4. En Encomienda (Congelados)</span>
+                    </h2>
+                    <p class="text-xs text-slate-500">Entregados al encomendista en tránsito hacia el cliente.</p>
                 </div>
-
-                <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 grid grid-cols-1 sm:grid-cols-3 gap-3">
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-600 mb-1">Mes</label>
-                        <select id="filtro-mes" onchange="renderizarTablas(globalPaquetes)" class="w-full p-2 border rounded-lg text-sm">
-                            <option value="">Todos los meses</option>
-                            <option value="01">Enero</option>
-                            <option value="02">Febrero</option>
-                            <option value="03">Marzo</option>
-                            <option value="04">Abril</option>
-                            <option value="05">Mayo</option>
-                            <option value="06">Junio</option>
-                            <option value="07">Julio</option>
-                            <option value="08">Agosto</option>
-                            <option value="09">Septiembre</option>
-                            <option value="10">Octubre</option>
-                            <option value="11">Noviembre</option>
-                            <option value="12">Diciembre</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-600 mb-1">Año</label>
-                        <select id="filtro-anio" onchange="renderizarTablas(globalPaquetes)" class="w-full p-2 border rounded-lg text-sm">
-                            <option value="">Todos los años</option>
-                            <option value="2026">2026</option>
-                            <option value="2025">2025</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-600 mb-1">Resultado</label>
-                        <select id="filtro-estado" onchange="renderizarTablas(globalPaquetes)" class="w-full p-2 border rounded-lg text-sm">
-                            <option value="">Todos (Cobrados y Devueltos)</option>
-                            <option value="Cobrado">Cobrado</option>
-                            <option value="Devuelto">Devuelto (No Retirado)</option>
-                        </select>
-                    </div>
+                <div class="bg-sky-100 text-sky-900 px-3 py-1.5 rounded-lg text-xs font-bold w-full sm:w-auto text-center">
+                    Dinero Congelado: <span id="total-dinero-congelado">$0.00</span>
                 </div>
+            </div>
 
-                <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-x-auto">
-                    <table class="w-full text-left text-sm">
-                        <thead class="bg-slate-50 border-b text-slate-600 uppercase text-xs">
-                            <tr>
-                                <th class="p-3 md:p-4">SKU</th>
-                                <th class="p-3 md:p-4 text-center">Foto Prenda</th>
-                                <th class="p-3 md:p-4">Fecha Enc.</th>
-                                <th class="p-3 md:p-4">Cliente</th>
-                                <th class="p-3 md:p-4">Depto / Destino</th>
-                                <th class="p-3 md:p-4">Encomendista</th>
-                                <th class="p-3 md:p-4 text-right">Costo</th>
-                                <th class="p-3 md:p-4 text-right">Cobro</th>
-                                <th class="p-3 md:p-4 text-right">Envío</th>
-                                <th class="p-3 md:p-4 text-center">Estado Final</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tabla-historial-body" class="divide-y divide-slate-100">
-                            <tr>
-                                <td colspan="10" class="p-4 text-center text-slate-400">Cargando historial de procesos finalizados...</td>
-                            </tr>
-                        </tbody>
-                    </table>
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-x-auto">
+                <table class="w-full text-left text-xs">
+                    <thead class="bg-slate-50 border-b text-slate-600 uppercase">
+                        <tr>
+                            <th class="p-3">SKU</th>
+                            <th class="p-3 text-center">Foto</th>
+                            <th class="p-3">F. Enc.</th>
+                            <th class="p-3">F. Entrega</th>
+                            <th class="p-3">Cliente / Celular</th>
+                            <th class="p-3">Encomendista</th>
+                            <th class="p-3 text-right">Monto</th>
+                            <th class="p-3 text-center">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-congelados-body" class="divide-y divide-slate-100">
+                        <tr>
+                            <td colspan="8" class="p-4 text-center text-slate-400">Cargando paquetes en encomienda...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- PESTAÑA 5: DINERO EN CALLE -->
+        <section id="tab-por-cobrar" class="space-y-4 hidden">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                <div>
+                    <h2 class="text-lg font-bold text-slate-900">5. Dinero en Calle (Por Cobrar)</h2>
+                    <p class="text-xs text-slate-500">Fecha de entrega cumplida pendientes de liquidación.</p>
                 </div>
-            </section>
+                <div class="bg-amber-100 text-amber-900 px-3 py-1.5 rounded-lg text-xs font-bold w-full sm:w-auto text-center">
+                    Total por Retirar: <span id="total-dinero-calle">$0.00</span>
+                </div>
+            </div>
 
-        </main>
-    </div>
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-x-auto">
+                <table class="w-full text-left text-xs">
+                    <thead class="bg-slate-50 border-b text-slate-600 uppercase">
+                        <tr>
+                            <th class="p-3">SKU</th>
+                            <th class="p-3 text-center">Foto</th>
+                            <th class="p-3">Cliente / Celular</th>
+                            <th class="p-3">Depto / Destino</th>
+                            <th class="p-3">Encomendista</th>
+                            <th class="p-3 text-right">Monto</th>
+                            <th class="p-3 text-center">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-cobros-body" class="divide-y divide-slate-100">
+                        <tr>
+                            <td colspan="7" class="p-4 text-center text-slate-400">Cargando cobros pendientes...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- PESTAÑA 6: HISTORIAL -->
+        <section id="tab-historial" class="space-y-4 hidden">
+            <div>
+                <h2 class="text-lg font-bold text-slate-900">6. Historial de Procesos Finalizados</h2>
+                <p class="text-xs text-slate-500">Registro histórico de ventas cobradas o devoluciones.</p>
+            </div>
+
+            <div class="bg-white p-3 rounded-xl shadow-sm border border-slate-200 grid grid-cols-1 sm:grid-cols-3 gap-2">
+                <div>
+                    <label class="block text-[10px] font-semibold text-slate-600 mb-0.5">Mes</label>
+                    <select id="filtro-mes" onchange="renderizarTablas(globalPaquetes)" class="w-full p-1.5 border rounded text-xs bg-white">
+                        <option value="">Todos los meses</option>
+                        <option value="01">Enero</option>
+                        <option value="02">Febrero</option>
+                        <option value="03">Marzo</option>
+                        <option value="04">Abril</option>
+                        <option value="05">Mayo</option>
+                        <option value="06">Junio</option>
+                        <option value="07">Julio</option>
+                        <option value="08">Agosto</option>
+                        <option value="09">Septiembre</option>
+                        <option value="10">Octubre</option>
+                        <option value="11">Noviembre</option>
+                        <option value="12">Diciembre</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-[10px] font-semibold text-slate-600 mb-0.5">Año</label>
+                    <select id="filtro-anio" onchange="renderizarTablas(globalPaquetes)" class="w-full p-1.5 border rounded text-xs bg-white">
+                        <option value="">Todos los años</option>
+                        <option value="2026">2026</option>
+                        <option value="2025">2025</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-[10px] font-semibold text-slate-600 mb-0.5">Resultado</label>
+                    <select id="filtro-estado" onchange="renderizarTablas(globalPaquetes)" class="w-full p-1.5 border rounded text-xs bg-white">
+                        <option value="">Todos (Cobrados y Devueltos)</option>
+                        <option value="Cobrado">Cobrado</option>
+                        <option value="Devuelto">Devuelto (No Retirado)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-x-auto">
+                <table class="w-full text-left text-xs">
+                    <thead class="bg-slate-50 border-b text-slate-600 uppercase">
+                        <tr>
+                            <th class="p-3">SKU</th>
+                            <th class="p-3 text-center">Foto</th>
+                            <th class="p-3">F. Enc.</th>
+                            <th class="p-3">Cliente</th>
+                            <th class="p-3">Depto / Destino</th>
+                            <th class="p-3">Encomendista</th>
+                            <th class="p-3 text-right">Costo</th>
+                            <th class="p-3 text-right">Cobro</th>
+                            <th class="p-3 text-right">Envío</th>
+                            <th class="p-3 text-center">Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-historial-body" class="divide-y divide-slate-100">
+                        <tr>
+                            <td colspan="10" class="p-4 text-center text-slate-400">Cargando historial finalizado...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
 
     <!-- MODAL / GALERÍA VISTA PREVIA FOTO PRENDA -->
     <div id="modal-foto" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
-        <div class="bg-white rounded-2xl max-w-sm w-full p-5 shadow-2xl space-y-4 relative">
-            <div class="flex justify-between items-center border-b pb-3">
+        <div class="bg-white rounded-2xl max-w-xs w-full p-4 shadow-2xl space-y-3 relative">
+            <div class="flex justify-between items-center border-b pb-2">
                 <div>
-                    <h3 class="font-bold text-slate-900 text-base" id="modal-foto-title">SKU-000000</h3>
-                    <p class="text-xs text-slate-500" id="modal-foto-subtitle">Vista previa de la prenda</p>
+                    <h3 class="font-bold text-slate-900 text-sm" id="modal-foto-title">SKU-000000</h3>
+                    <p class="text-[10px] text-slate-500" id="modal-foto-subtitle">Vista previa de prenda</p>
                 </div>
-                <button onclick="cerrarModalFoto()" class="text-slate-400 hover:text-slate-600 p-1 rounded-full bg-slate-100 hover:bg-slate-200">
-                    <i class="fa-solid fa-xmark text-lg"></i>
+                <button onclick="cerrarModalFoto()" class="text-slate-400 hover:text-slate-600 p-1 rounded-full bg-slate-100">
+                    <i class="fa-solid fa-xmark text-base"></i>
                 </button>
             </div>
             
-            <div class="flex justify-center bg-slate-950 rounded-xl overflow-hidden min-h-[280px] max-h-[60vh] items-center p-2 relative shadow-inner">
-                <img id="modal-foto-img" src="" alt="Foto Prenda" class="max-h-[55vh] w-auto object-contain rounded-lg">
+            <div class="flex justify-center bg-slate-950 rounded-xl overflow-hidden min-h-[220px] max-h-[50vh] items-center p-2 relative shadow-inner">
+                <img id="modal-foto-img" src="" alt="Foto Prenda" class="max-h-[45vh] w-auto object-contain rounded-lg">
             </div>
 
-            <div class="pt-1 flex justify-between items-center text-xs text-slate-500 border-t">
-                <span id="modal-foto-info-cliente" class="font-medium"></span>
-                <a id="modal-foto-btn-link" href="#" target="_blank" class="text-indigo-600 hover:underline font-bold flex items-center space-x-1">
-                    <span>Abrir HD</span>
-                    <i class="fa-solid fa-up-right-from-square text-[10px]"></i>
+            <div class="pt-1 flex justify-between items-center text-[11px] text-slate-500 border-t">
+                <span id="modal-foto-info-cliente" class="font-medium truncate mr-2"></span>
+                <a id="modal-foto-btn-link" href="#" target="_blank" class="text-indigo-600 font-bold flex items-center space-x-1 whitespace-nowrap">
+                    <span>Ver HD</span>
+                    <i class="fa-solid fa-up-right-from-square text-[9px]"></i>
                 </a>
             </div>
         </div>
     </div>
 
-    <!-- MODAL DE EDICIÓN CON SOPORTE PARA FOTO -->
+    <!-- MODAL DE EDICIÓN CON SOPORTE PARA SUBIR / CAMBIAR FOTO -->
     <div id="modal-edicion" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
-        <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
-            <div class="flex justify-between items-center border-b pb-3">
-                <h3 class="font-bold text-slate-900 text-lg flex items-center space-x-2">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-5 shadow-2xl space-y-3 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center border-b pb-2">
+                <h3 class="font-bold text-slate-900 text-base flex items-center space-x-2">
                     <i class="fa-solid fa-pen-to-square text-indigo-600"></i>
                     <span>Corregir Paquete <span id="modal-sku-title" class="font-mono text-indigo-600">SKU-000000</span></span>
                 </h3>
                 <button onclick="cerrarModalEdicion()" class="text-slate-400 hover:text-slate-600 p-1">
-                    <i class="fa-solid fa-xmark text-xl"></i>
+                    <i class="fa-solid fa-xmark text-lg"></i>
                 </button>
             </div>
 
             <form id="form-editar-paquete" onsubmit="guardarEdicion(event)" class="space-y-3">
                 <input type="hidden" id="edit-sku">
 
-                <!-- SUBIDA / CAMBIO DE FOTO -->
-                <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
+                <!-- SUBIR / REEMPLAZAR FOTO -->
+                <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200">
                     <label class="block text-xs font-bold text-slate-700 mb-1">
-                        <i class="fa-solid fa-camera text-indigo-600 mr-1"></i> Actualizar / Agregar Foto de Prenda
+                        <i class="fa-solid fa-camera text-indigo-600 mr-1"></i> Actualizar / Subir Foto Prenda
                     </label>
-                    <input type="file" id="edit-foto-input" accept="image/*" class="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
+                    <input type="file" id="edit-foto-input" accept="image/*" class="w-full text-xs text-slate-500 file:mr-3 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700">
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
                     <div>
-                        <label class="block text-xs font-semibold text-slate-600 mb-1">Cliente</label>
-                        <input type="text" id="edit-cliente" required class="w-full p-2 border rounded-lg text-sm">
+                        <label class="block text-[10px] font-semibold text-slate-600 mb-0.5">Cliente</label>
+                        <input type="text" id="edit-cliente" required class="w-full p-1.5 border rounded text-xs">
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-slate-600 mb-1">Celular</label>
-                        <input type="tel" id="edit-celular" required class="w-full p-2 border rounded-lg text-sm">
+                        <label class="block text-[10px] font-semibold text-slate-600 mb-0.5">Celular</label>
+                        <input type="tel" id="edit-celular" required class="w-full p-1.5 border rounded text-xs">
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
                     <div>
-                        <label class="block text-xs font-semibold text-slate-600 mb-1">Departamento (SV)</label>
-                        <select id="edit-departamento" required class="w-full p-2 border rounded-lg text-sm">
+                        <label class="block text-[10px] font-semibold text-slate-600 mb-0.5">Departamento (SV)</label>
+                        <select id="edit-departamento" required class="w-full p-1.5 border rounded text-xs bg-white">
                             <option value="Ahuachapán">Ahuachapán</option>
                             <option value="Cabañas">Cabañas</option>
                             <option value="Chalatenango">Chalatenango</option>
@@ -621,63 +560,65 @@
                         </select>
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-slate-600 mb-1">Municipio / Destino</label>
-                        <input type="text" id="edit-destino" required class="w-full p-2 border rounded-lg text-sm">
+                        <label class="block text-[10px] font-semibold text-slate-600 mb-0.5">Municipio / Destino</label>
+                        <input type="text" id="edit-destino" required class="w-full p-1.5 border rounded text-xs">
                     </div>
                 </div>
 
                 <div>
-                    <label class="block text-xs font-semibold text-slate-600 mb-1">Artículo</label>
-                    <input type="text" id="edit-articulo" required class="w-full p-2 border rounded-lg text-sm">
+                    <label class="block text-[10px] font-semibold text-slate-600 mb-0.5">Artículo</label>
+                    <input type="text" id="edit-articulo" required class="w-full p-1.5 border rounded text-xs">
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
                     <div>
-                        <label class="block text-xs font-semibold text-slate-600 mb-1">Encomendista</label>
-                        <input type="text" id="edit-encomendista" required class="w-full p-2 border rounded-lg text-sm">
+                        <label class="block text-[10px] font-semibold text-slate-600 mb-0.5">Encomendista</label>
+                        <input type="text" id="edit-encomendista" required class="w-full p-1.5 border rounded text-xs">
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-slate-600 mb-1">Fecha Enc.</label>
-                        <input type="date" id="edit-fecha-enc" required class="w-full p-2 border rounded-lg text-sm">
+                        <label class="block text-[10px] font-semibold text-slate-600 mb-0.5">Fecha Enc.</label>
+                        <input type="date" id="edit-fecha-enc" required class="w-full p-1.5 border rounded text-xs">
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-slate-600 mb-1">Fecha Entrega</label>
-                        <input type="date" id="edit-fecha-entrega" required class="w-full p-2 border rounded-lg text-sm">
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 bg-slate-50 p-3 rounded-lg border">
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-600 mb-1">Costo ($)</label>
-                        <input type="number" step="0.01" id="edit-costo-prenda" required class="w-full p-2 border rounded-lg text-sm">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-600 mb-1">Cobro ($)</label>
-                        <input type="number" step="0.01" id="edit-precio-cobrar" required class="w-full p-2 border rounded-lg text-sm">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-600 mb-1">Envío ($)</label>
-                        <input type="number" step="0.01" id="edit-costo-envio" required class="w-full p-2 border rounded-lg text-sm">
+                        <label class="block text-[10px] font-semibold text-slate-600 mb-0.5">Fecha Entrega</label>
+                        <input type="date" id="edit-fecha-entrega" required class="w-full p-1.5 border rounded text-xs">
                     </div>
                 </div>
 
-                <div class="flex items-center justify-between pt-3 border-t">
-                    <button type="button" onclick="eliminarPaquete()" class="bg-rose-50 text-rose-600 hover:bg-rose-100 text-xs px-3 py-2 rounded-lg font-bold flex items-center space-x-1">
+                <div class="grid grid-cols-3 gap-2 bg-slate-50 p-2.5 rounded-lg border">
+                    <div>
+                        <label class="block text-[10px] font-semibold text-slate-600 mb-0.5">Costo ($)</label>
+                        <input type="number" step="0.01" id="edit-costo-prenda" required class="w-full p-1.5 border rounded text-xs">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-semibold text-slate-600 mb-0.5">Cobro ($)</label>
+                        <input type="number" step="0.01" id="edit-precio-cobrar" required class="w-full p-1.5 border rounded text-xs">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-semibold text-slate-600 mb-0.5">Envío ($)</label>
+                        <input type="number" step="0.01" id="edit-costo-envio" required class="w-full p-1.5 border rounded text-xs">
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between pt-2 border-t">
+                    <button type="button" onclick="eliminarPaquete()" class="bg-rose-50 text-rose-600 hover:bg-rose-100 text-xs px-3 py-1.5 rounded-lg font-bold flex items-center space-x-1">
                         <i class="fa-solid fa-trash-can"></i>
                         <span>Eliminar</span>
                     </button>
                     <div class="flex space-x-2">
-                        <button type="button" onclick="cerrarModalEdicion()" class="bg-slate-200 text-slate-700 text-xs px-4 py-2 rounded-lg font-bold">Cancelar</button>
-                        <button type="submit" id="btn-guardar-edit" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs px-4 py-2 rounded-lg font-bold shadow">Guardar Cambios</button>
+                        <button type="button" onclick="cerrarModalEdicion()" class="bg-slate-200 text-slate-700 text-xs px-3 py-1.5 rounded-lg font-bold">Cancelar</button>
+                        <button type="submit" id="btn-guardar-edit" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs px-3 py-1.5 rounded-lg font-bold shadow flex items-center justify-center min-w-[110px]">
+                            <span>Guardar Cambios</span>
+                        </button>
                     </div>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- SCRIPT PRINCIPAL -->
+    <!-- SCRIPT PRINCIPAL INTERACTIVO -->
     <script>
-        const API_URL = "https://script.google.com/macros/s/AKfycbzd-bO9UVLDeL6_dV1Hc13EE61oFS1TfzDum1pmLL4qBVw9j_8tnm04crasmukkDFmi/exec";
+        const API_URL = "https://script.google.com/macros/s/AKfycbycSwPtbVvEtc0MW_aHX4Rn1krxJRi_RPqhCd45CHcPPeFgjCmOuLNC5hKXta6xsyyV/exec";
         let globalPaquetes = [];
 
         window.addEventListener('DOMContentLoaded', () => {
@@ -707,27 +648,16 @@
             document.querySelectorAll('main > section').forEach(sec => sec.classList.add('hidden'));
             
             document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.classList.remove('bg-indigo-600', 'text-white', 'shadow');
-                btn.classList.add('hover:bg-slate-800', 'text-slate-300');
-            });
-
-            document.querySelectorAll('.nav-btn-mb').forEach(btn => {
-                btn.classList.remove('text-indigo-400');
+                btn.classList.remove('text-indigo-400', 'bg-slate-800/60', 'font-bold');
                 btn.classList.add('text-slate-400');
             });
 
             document.getElementById(tabId).classList.remove('hidden');
 
-            const activeBtnDt = document.getElementById('btn-' + tabId + '-dt');
-            if (activeBtnDt) {
-                activeBtnDt.classList.add('bg-indigo-600', 'text-white', 'shadow');
-                activeBtnDt.classList.remove('hover:bg-slate-800', 'text-slate-300');
-            }
-
-            const activeBtnMb = document.getElementById('btn-' + tabId + '-mb');
-            if (activeBtnMb) {
-                activeBtnMb.classList.add('text-indigo-400');
-                activeBtnMb.classList.remove('text-slate-400');
+            const activeBtn = document.getElementById('btn-' + tabId);
+            if (activeBtn) {
+                activeBtn.classList.add('text-indigo-400', 'bg-slate-800/60', 'font-bold');
+                activeBtn.classList.remove('text-slate-400');
             }
 
             if (tabId === 'tab-ingreso') {
@@ -797,7 +727,7 @@
             event.preventDefault();
             const btn = document.getElementById('btn-guardar-pkg');
             btn.disabled = true;
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i>Guardando foto y datos en Sheets...';
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> Guardando datos...';
 
             const esPagoAnticipado = document.getElementById('pago-anticipado').checked;
             const fotoFile = document.getElementById('foto-input').files[0];
@@ -831,7 +761,7 @@
             })
             .then(res => res.json())
             .then(res => {
-                alert("¡Paquete " + res.sku + " registrado exitosamente!");
+                alert("¡Paquete " + res.sku + " registrado con éxito!");
                 document.getElementById('form-registro-paquete').reset();
                 btn.disabled = false;
                 btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i><span>Registrar en Google Sheets</span>';
@@ -875,7 +805,7 @@
 
             document.getElementById('modal-foto-title').innerText = pkg.sku;
             document.getElementById('modal-foto-subtitle').innerText = pkg.articulo || "Vista previa de la prenda";
-            document.getElementById('modal-foto-info-cliente').innerText = "Cliente: " + (pkg.cliente || "Sin nombre");
+            document.getElementById('modal-foto-info-cliente').innerText = "Cliente: " + (pkg.cliente || "Anónimo");
             document.getElementById('modal-foto-img').src = pkg.fotoUrl;
             document.getElementById('modal-foto-btn-link').href = pkg.fotoUrl;
             
@@ -889,8 +819,8 @@
 
         function marcarEstado(sku, nuevoEstado) {
             const msj = (nuevoEstado === "Cobrado") 
-                ? `¿Confirmas que el paquete ${sku} ya fue COBRADO por transferencia o liquidación?`
-                : `¿Marcar el paquete ${sku} como DEVUELTO (cliente no retiro)?`;
+                ? `¿Confirmas que el paquete ${sku} ya fue COBRADO?`
+                : `¿Marcar el paquete ${sku} como DEVUELTO?`;
 
             if (confirm(msj)) {
                 fetch(API_URL, {
@@ -934,7 +864,7 @@
             event.preventDefault();
             const btn = document.getElementById('btn-guardar-edit');
             btn.disabled = true;
-            btn.innerText = "Guardando...";
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> Guardando...';
 
             const editFotoFile = document.getElementById('edit-foto-input').files[0];
             let fotoBase64 = "";
@@ -967,7 +897,7 @@
             .then(res => res.json())
             .then(() => {
                 btn.disabled = false;
-                btn.innerText = "Guardar Cambios";
+                btn.innerHTML = '<span>Guardar Cambios</span>';
                 cerrarModalEdicion();
                 cargarDatosGenerales();
             });
@@ -1005,13 +935,13 @@
                 const fechaEntregaLimpia = formatearSoloFecha(p.fechaEntrega);
 
                 const btnFoto = p.fotoUrl 
-                    ? `<button onclick="abrirModalFoto('${p.sku}')" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-600 px-2.5 py-1 rounded-lg font-bold text-xs flex items-center justify-center space-x-1 mx-auto shadow-sm border border-indigo-200 transition active:scale-95">
+                    ? `<button onclick="abrirModalFoto('${p.sku}')" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-600 px-2 py-0.5 rounded font-bold text-[10px] flex items-center justify-center space-x-1 mx-auto border border-indigo-200">
                         <i class="fa-solid fa-camera"></i>
-                        <span class="hidden sm:inline">Ver Foto</span>
+                        <span>Ver</span>
                        </button>`
-                    : `<span class="text-slate-300 text-xs italic"><i class="fa-solid fa-image-slash mr-1"></i>Sin Foto</span>`;
+                    : `<span class="text-slate-300 text-[10px] italic">Sin Foto</span>`;
 
-                // 6. HISTORIAL DE PROCESOS FINALIZADOS
+                // 6. HISTORIAL
                 if (p.estado === "Cobrado" || p.estado === "Devuelto") {
                     let cumple = true;
                     if (fEstado && p.estado !== fEstado) cumple = false;
@@ -1027,44 +957,44 @@
                     if (cumple) {
                         htmlHistorial += `
                             <tr>
-                                <td class="p-3 font-bold font-mono text-indigo-600">${p.sku}</td>
-                                <td class="p-3 text-center">${btnFoto}</td>
-                                <td class="p-3 text-xs">${fechaEncLimpia}</td>
-                                <td class="p-3 font-medium">${p.cliente}</td>
-                                <td class="p-3 text-xs">${p.departamento} / ${p.destino}</td>
-                                <td class="p-3 text-xs font-semibold">${p.encomendista}</td>
-                                <td class="p-3 text-right text-xs">$${parseFloat(p.costoPrenda).toFixed(2)}</td>
-                                <td class="p-3 text-right text-xs font-bold">$${parseFloat(p.precioCobrar).toFixed(2)}</td>
-                                <td class="p-3 text-right text-xs text-slate-500">$${parseFloat(p.costoEnvio).toFixed(2)}</td>
-                                <td class="p-3 text-center">
-                                    <span class="text-[10px] font-bold px-2 py-1 rounded-full ${p.estado === 'Cobrado' ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}">
-                                        ${p.estado === 'Devuelto' ? 'Devuelto (No Retiró)' : p.estado}
+                                <td class="p-2.5 font-bold font-mono text-indigo-600">${p.sku}</td>
+                                <td class="p-2.5 text-center">${btnFoto}</td>
+                                <td class="p-2.5 text-[11px]">${fechaEncLimpia}</td>
+                                <td class="p-2.5 font-medium">${p.cliente}</td>
+                                <td class="p-2.5 text-[11px]">${p.departamento} / ${p.destino}</td>
+                                <td class="p-2.5 font-semibold text-[11px]">${p.encomendista}</td>
+                                <td class="p-2.5 text-right">$${parseFloat(p.costoPrenda).toFixed(2)}</td>
+                                <td class="p-2.5 text-right font-bold">$${parseFloat(p.precioCobrar).toFixed(2)}</td>
+                                <td class="p-2.5 text-right text-slate-500">$${parseFloat(p.costoEnvio).toFixed(2)}</td>
+                                <td class="p-2.5 text-center">
+                                    <span class="text-[9px] font-bold px-1.5 py-0.5 rounded-full ${p.estado === 'Cobrado' ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}">
+                                        ${p.estado === 'Devuelto' ? 'Devuelto' : p.estado}
                                     </span>
                                 </td>
                             </tr>`;
                     }
                 }
 
-                // 4. EN ENCOMENDA (CONGELADOS) - CON BOTÓN EDITAR AGREGADO
+                // 4. EN ENCOMENDA (CONGELADOS)
                 if (p.estado === "En Encomienda") {
                     totalCongelado += parseFloat(p.precioCobrar || 0);
                     htmlCongelados += `
                         <tr>
-                            <td class="p-3 font-bold font-mono text-indigo-600">${p.sku}</td>
-                            <td class="p-3 text-center">${btnFoto}</td>
-                            <td class="p-3 text-xs">${fechaEncLimpia}</td>
-                            <td class="p-3 text-xs">${fechaEntregaLimpia}</td>
-                            <td class="p-3 font-medium">${p.cliente} (${p.celular})</td>
-                            <td class="p-3 font-semibold text-xs">${p.encomendista}</td>
-                            <td class="p-3 text-right font-bold text-sky-600">$${parseFloat(p.precioCobrar).toFixed(2)}</td>
-                            <td class="p-3 text-center">
-                                <div class="flex items-center justify-center space-x-1.5">
-                                    <button onclick="abrirModalEdicion('${p.sku}')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 p-1.5 rounded-lg text-xs font-bold" title="Editar o agregar foto">
+                            <td class="p-2.5 font-bold font-mono text-indigo-600">${p.sku}</td>
+                            <td class="p-2.5 text-center">${btnFoto}</td>
+                            <td class="p-2.5 text-[11px]">${fechaEncLimpia}</td>
+                            <td class="p-2.5 text-[11px]">${fechaEntregaLimpia}</td>
+                            <td class="p-2.5 font-medium">${p.cliente} (${p.celular})</td>
+                            <td class="p-2.5 font-semibold text-[11px]">${p.encomendista}</td>
+                            <td class="p-2.5 text-right font-bold text-sky-600">$${parseFloat(p.precioCobrar).toFixed(2)}</td>
+                            <td class="p-2.5 text-center">
+                                <div class="flex items-center justify-center space-x-1">
+                                    <button onclick="abrirModalEdicion('${p.sku}')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 p-1 rounded text-xs font-bold" title="Editar / Foto">
                                         <i class="fa-solid fa-pen-to-square"></i>
                                     </button>
-                                    <button onclick="marcarEstado('${p.sku}', 'Cobrado')" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs px-2.5 py-1 rounded-lg font-bold flex items-center space-x-1 shadow transition active:scale-95">
+                                    <button onclick="marcarEstado('${p.sku}', 'Cobrado')" class="bg-emerald-600 hover:bg-emerald-700 text-white text-[10px] px-2 py-1 rounded font-bold flex items-center space-x-1 shadow">
                                         <i class="fa-solid fa-money-bill-transfer"></i>
-                                        <span>Cobrado Transferencia</span>
+                                        <span>Cobrado</span>
                                     </button>
                                 </div>
                             </td>
@@ -1076,31 +1006,31 @@
                     totalPorCobrar += parseFloat(p.precioCobrar || 0);
                     htmlPorCobrar += `
                         <tr>
-                            <td class="p-3 font-bold font-mono text-indigo-600">${p.sku}</td>
-                            <td class="p-3 text-center">${btnFoto}</td>
-                            <td class="p-3">
+                            <td class="p-2.5 font-bold font-mono text-indigo-600">${p.sku}</td>
+                            <td class="p-2.5 text-center">${btnFoto}</td>
+                            <td class="p-2.5">
                                 <div class="font-medium">${p.cliente}</div>
-                                <a href="https://wa.me/503${p.celular}" target="_blank" class="text-xs text-emerald-600 hover:underline flex items-center space-x-1">
+                                <a href="https://wa.me/503${p.celular}" target="_blank" class="text-[10px] text-emerald-600 hover:underline flex items-center space-x-0.5">
                                     <i class="fa-brands fa-whatsapp"></i> <span>${p.celular}</span>
                                 </a>
                             </td>
-                            <td class="p-3 text-xs"><span class="font-bold text-slate-800">${p.departamento}</span> / ${p.destino}</td>
-                            <td class="p-3 font-semibold text-xs text-slate-700">${p.encomendista}</td>
-                            <td class="p-3 text-right font-extrabold text-slate-900">$${parseFloat(p.precioCobrar).toFixed(2)}</td>
-                            <td class="p-3 text-center">
+                            <td class="p-2.5 text-[11px]"><span class="font-bold text-slate-800">${p.departamento}</span> / ${p.destino}</td>
+                            <td class="p-2.5 font-semibold text-[11px] text-slate-700">${p.encomendista}</td>
+                            <td class="p-2.5 text-right font-extrabold text-slate-900">$${parseFloat(p.precioCobrar).toFixed(2)}</td>
+                            <td class="p-2.5 text-center">
                                 <div class="flex items-center justify-center space-x-1">
-                                    <button onclick="abrirModalEdicion('${p.sku}')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 p-1.5 rounded-lg text-xs font-bold"><i class="fa-solid fa-pen-to-square"></i></button>
-                                    <button onclick="marcarEstado('${p.sku}', 'Cobrado')" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs px-2 py-1 rounded-lg font-bold">Cobrado</button>
-                                    <button onclick="marcarEstado('${p.sku}', 'Devuelto')" class="bg-rose-600 hover:bg-rose-700 text-white text-xs px-2 py-1 rounded-lg font-bold">Devuelto</button>
+                                    <button onclick="abrirModalEdicion('${p.sku}')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 p-1 rounded text-xs font-bold"><i class="fa-solid fa-pen-to-square"></i></button>
+                                    <button onclick="marcarEstado('${p.sku}', 'Cobrado')" class="bg-emerald-600 hover:bg-emerald-700 text-white text-[10px] px-1.5 py-1 rounded font-bold">Cobrado</button>
+                                    <button onclick="marcarEstado('${p.sku}', 'Devuelto')" class="bg-rose-600 hover:bg-rose-700 text-white text-[10px] px-1.5 py-1 rounded font-bold">Devuelto</button>
                                 </div>
                             </td>
                         </tr>`;
                 }
             });
 
-            document.getElementById('tabla-congelados-body').innerHTML = htmlCongelados || '<tr><td colspan="8" class="p-4 text-center text-slate-400">No hay paquetes congelados.</td></tr>';
-            document.getElementById('tabla-cobros-body').innerHTML = htmlPorCobrar || '<tr><td colspan="7" class="p-4 text-center text-slate-400">No hay cobros pendientes.</td></tr>';
-            document.getElementById('tabla-historial-body').innerHTML = htmlHistorial || '<tr><td colspan="10" class="p-4 text-center text-slate-400">No hay registros finalizados con los filtros seleccionados.</td></tr>';
+            document.getElementById('tabla-congelados-body').innerHTML = htmlCongelados || '<tr><td colspan="8" class="p-3 text-center text-slate-400">No hay paquetes congelados.</td></tr>';
+            document.getElementById('tabla-cobros-body').innerHTML = htmlPorCobrar || '<tr><td colspan="7" class="p-3 text-center text-slate-400">No hay cobros pendientes.</td></tr>';
+            document.getElementById('tabla-historial-body').innerHTML = htmlHistorial || '<tr><td colspan="10" class="p-3 text-center text-slate-400">No hay registros finalizados con los filtros seleccionados.</td></tr>';
 
             document.getElementById('total-dinero-congelado').innerText = "$" + totalCongelado.toFixed(2);
             document.getElementById('total-dinero-calle').innerText = "$" + totalPorCobrar.toFixed(2);
@@ -1137,18 +1067,18 @@
             const sortedEnc = Object.entries(encomendistas).sort((a,b) => b[1] - a[1]);
             if (sortedEnc.length > 0) {
                 document.getElementById('lbl-top-encomendista').innerText = sortedEnc[0][0];
-                document.getElementById('lbl-top-encomendista-pct').innerText = sortedEnc[0][1] + " envíos procesados";
+                document.getElementById('lbl-top-encomendista-pct').innerText = sortedEnc[0][1] + " envíos";
             }
 
             let htmlDeptos = "";
             sortedDeptos.slice(0, 5).forEach(([deptoName, montoTotal]) => {
                 htmlDeptos += `
-                    <div class="flex items-center justify-between p-2.5 bg-slate-50 rounded-lg">
-                        <span class="font-bold text-xs text-slate-800"><i class="fa-solid fa-location-dot text-indigo-500 mr-1.5"></i>${deptoName}</span>
-                        <span class="font-extrabold text-xs text-indigo-600">$${montoTotal.toFixed(2)}</span>
+                    <div class="flex items-center justify-between p-2 bg-slate-50 rounded text-xs">
+                        <span class="font-bold text-slate-800"><i class="fa-solid fa-location-dot text-indigo-500 mr-1"></i>${deptoName}</span>
+                        <span class="font-extrabold text-indigo-600">$${montoTotal.toFixed(2)}</span>
                     </div>`;
             });
-            document.getElementById('lista-top-deptos').innerHTML = htmlDeptos || '<p class="text-xs text-slate-400 text-center py-4">Sin datos de venta aún.</p>';
+            document.getElementById('lista-top-deptos').innerHTML = htmlDeptos || '<p class="text-xs text-slate-400 text-center py-3">Sin datos de venta aún.</p>';
 
             const sortedClientes = Object.entries(clientes).sort((a,b) => b[1].total - a[1].total);
             const top5Clientes = sortedClientes.slice(0, 5);
@@ -1161,45 +1091,21 @@
             let htmlTop5 = "";
             top5Clientes.forEach(([nombreCliente, info], index) => {
                 let medallaIcon = `<span class="font-bold text-slate-500">#${index + 1}</span>`;
-                if (index === 0) medallaIcon = `<i class="fa-solid fa-crown text-amber-500 text-base" title="Top 1 VIP"></i>`;
-                if (index === 1) medallaIcon = `<i class="fa-solid fa-medal text-slate-400 text-base" title="Top 2"></i>`;
-                if (index === 2) medallaIcon = `<i class="fa-solid fa-award text-amber-700 text-base" title="Top 3"></i>`;
+                if (index === 0) medallaIcon = `<i class="fa-solid fa-crown text-amber-500" title="Top 1"></i>`;
+                if (index === 1) medallaIcon = `<i class="fa-solid fa-medal text-slate-400" title="Top 2"></i>`;
+                if (index === 2) medallaIcon = `<i class="fa-solid fa-award text-amber-700" title="Top 3"></i>`;
 
                 htmlTop5 += `
                     <tr class="hover:bg-slate-50">
-                        <td class="p-2 text-center">${medallaIcon}</td>
-                        <td class="p-2 font-bold text-slate-900">${nombreCliente}</td>
-                        <td class="p-2 text-slate-600">${info.depto}</td>
-                        <td class="p-2 text-center font-bold text-indigo-600">${info.compras}</td>
-                        <td class="p-2 text-right font-extrabold text-emerald-600">$${info.total.toFixed(2)}</td>
+                        <td class="p-1.5 text-center">${medallaIcon}</td>
+                        <td class="p-1.5 font-bold text-slate-900">${nombreCliente}</td>
+                        <td class="p-1.5 text-slate-600">${info.depto}</td>
+                        <td class="p-1.5 text-center font-bold text-indigo-600">${info.compras}</td>
+                        <td class="p-1.5 text-right font-extrabold text-emerald-600">$${info.total.toFixed(2)}</td>
                     </tr>`;
             });
 
-            document.getElementById('tabla-top-clientes-body').innerHTML = htmlTop5 || '<tr><td colspan="5" class="p-4 text-center text-slate-400">Sin compras registradas aún.</td></tr>';
-        }
-
-        // PROMPT DE INSTALACIÓN PWA
-        let deferredPrompt;
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            const btnInstalar = document.getElementById('btn-instalar');
-            btnInstalar.classList.remove('hidden');
-
-            btnInstalar.addEventListener('click', () => {
-                btnInstalar.classList.add('hidden');
-                deferredPrompt.prompt();
-                deferredPrompt.userChoice.then(() => { deferredPrompt = null; });
-            });
-        });
-
-        if ('serviceWorker' in navigator) {
-            const swCode = `
-                self.addEventListener('install', e => self.skipWaiting());
-                self.addEventListener('fetch', e => e.respondWith(fetch(e.request)));
-            `;
-            const blob = new Blob([swCode], { type: 'application/javascript' });
-            navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(err => {});
+            document.getElementById('tabla-top-clientes-body').innerHTML = htmlTop5 || '<tr><td colspan="5" class="p-3 text-center text-slate-400">Sin compras registradas aún.</td></tr>';
         }
     </script>
 </body>
